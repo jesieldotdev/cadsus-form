@@ -118,7 +118,7 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
             <label className="block text-gray-700">Escolaridade</label>
             <input
               type="text"
-              name="escola"
+              name="escolaridade"
               value={memberData.escolaridade}
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border rounded-md text-gray-900 text-sm"
