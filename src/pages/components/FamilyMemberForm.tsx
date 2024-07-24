@@ -23,10 +23,15 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
     handleInputChange(index, 'sus', value);
   };
 
-  const memberTypes = ['Responsável', 'Pai', 'Mãe', 'Filho', 'Filha', 'Genro/nora', 'Cônjuge', 'Neto'];
+  const handleDateBirthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    handleInputChange(index, 'nascimento', value)
+  }
+
+  const memberTypes = ['Responsável', 'Irmão/irmã', 'Pai', 'Mãe', 'Filho(a)', 'Genro/Nora', 'Cônjuge', 'Neto(a)/Bisneto(a)', 'Sogro(a)', 'Enteado(a)', 'Outro'];
 
   return (
-    <div className="space-y-4 p-4 border rounded-md shadow-md mb-4">
+    <div className="space-y-4 p-4 border rounded-md shadow-md mb-4 text-sm">
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold">Membro {index + 1}</h2>
         <button
@@ -54,6 +59,7 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
           <div className="w-1/2">
             <label className="block text-gray-700">Nome</label>
             <input
+            placeholder='João Niguém'
               type="text"
               name="nome"
               value={memberData.nome}
@@ -65,6 +71,7 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
             <label className="block text-gray-700">SUS</label>
             <input
               type="text"
+              placeholder='000.0000.0000.0000'
               name="sus"
               value={memberData.sus}
               onChange={handleSUSChange}
@@ -97,26 +104,16 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
         </div>
         <div className="flex space-x-4">
           <div className="w-1/3">
-            <label className="block text-gray-700">Natural</label>
+            <label className="block text-gray-700">Nascimento</label>
             <input
-              type="text"
+              type="date"
               name="natural"
-              value={memberData.natural}
-              onChange={handleChange}
+              value={memberData.nascimento}
+              onChange={handleDateBirthChange}
               className="mt-1 block w-full px-3 py-2 border rounded-md text-gray-900 text-sm"
             />
           </div>
-       
-          <div className="w-1/3">
-            <label className="block text-gray-700">Ocupação</label>
-            <input
-              type="text"
-              name="ocupacao"
-              value={memberData.ocupacao}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border rounded-md text-gray-900 text-sm"
-            />
-          </div>
+
           <div className="w-1/3">
             <label className="block text-gray-700">Escolaridade</label>
             <input
@@ -127,18 +124,47 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
               className="mt-1 block w-full px-3 py-2 border rounded-md text-gray-900 text-sm"
             />
           </div>
-        </div>
-
-        <div className="w-1/3">
-            <label className="block text-gray-700">Cor</label>
+          <div className="w-1/3">
+            <label className="block text-gray-700">Ocupação</label>
             <input
               type="text"
-              name="natural"
-              value={memberData.cor}
+              name="ocupacao"
+              value={memberData.ocupacao}
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border rounded-md text-gray-900 text-sm"
             />
           </div>
+
+        </div>
+
+        <div className="flex space-x-4">
+          <div className="w-1/3">
+            <label className="block text-gray-700">Naturalidade</label>
+            <input
+              type="text"
+              name="natural"
+              value={memberData.naturalidade}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border rounded-md text-gray-900 text-sm"
+            />
+
+          </div>
+          <div className="w-1/3">
+            <label className="block text-gray-700">Cor</label>
+            <select
+              name="propertyType"
+              className="mt-1 block w-full px-3 py-2 border rounded-md text-gray-900 text-sm"
+            >
+              <option value="Branco">Branco</option>
+              <option value="Preto">Preto</option>
+              <option value="Pardo">Pardo</option>
+              <option value="Amarelo">Amarelo</option>
+              <option value="Indigena">Indigena</option>
+            </select>
+          </div>
+
+        </div>
+
         <div>
           <label className="block text-gray-700">Observação</label>
           <textarea
