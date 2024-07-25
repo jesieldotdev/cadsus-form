@@ -76,6 +76,8 @@ const Form: React.FC = () => {
     window.print();
   };
 
+  const propertyTypes = ['Alugado', 'Próprio', 'Situação de rua']
+
   return (
     <div className="max-w-4xl mx-auto p-4 bg-white">
       <h1 className="text-2xl font-bold mb-4">Formulário da Família</h1>
@@ -89,13 +91,14 @@ const Form: React.FC = () => {
               type="text"
               name="endereco"
               value={address}
+              placeholder='Rua qualquer, n000'
               onChange={handleAddressChange}
               className="mt-1 block w-full px-3 py-2 border rounded-md text-gray-900"
             />
           </div>
 
           <div className='w-1/3'>
-            <label className="block text-gray-700">Telefone</label>
+            <label className="block text-gray-700">Tel. Contato</label>
             <input
               type="tel"
               name="phone"
@@ -138,8 +141,11 @@ const Form: React.FC = () => {
                 onChange={handlePropertyTypeChange}
                 className="mt-1 block w-full px-3 py-2 border rounded-md text-gray-900 text-sm"
               >
-                <option value="Alugado">Alugado</option>
-                <option value="Próprio">Próprio</option>
+                {
+                  propertyTypes.map(item =>
+                    <option value={item} key={item}>{item}</option>
+                  )
+                }
               </select>
             </div>
           </div>
@@ -148,8 +154,9 @@ const Form: React.FC = () => {
             <input
               type="text"
               name="animalType"
+              placeholder='Cachorro, gato'
               value={animalType}
-              onChange={handleRoomsChange}
+              onChange={handleAnimalTypeChange}
               className="mt-1 block w-full px-3 py-2 border rounded-md text-gray-900"
             />
             <label className="block text-gray-700">Quantos?</label>
