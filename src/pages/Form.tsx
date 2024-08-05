@@ -12,6 +12,7 @@ interface FamilyMember {
   ocupacao: string;
   escolaridade: string;
   observacao: string;
+  cor: string;
   nascimento: Date | '';
 }
 
@@ -26,7 +27,7 @@ const Form: React.FC = () => {
   const [rooms, setRooms] = useState<number>();
 
   const addMember = () => {
-    setMembers([...members, { tipo: '', nome: '', sus: '', mae: '', pai: '', naturalidade: '', ocupacao: '', escolaridade: '', observacao: '', nascimento: '' }]);
+    setMembers([...members, { tipo: '', nome: '', sus: '', mae: '', pai: '', naturalidade: '', ocupacao: '', escolaridade: '', observacao: '', nascimento: '', cor:'' }]);
   };
 
   const removeMember = (index: number) => {
@@ -77,7 +78,17 @@ const Form: React.FC = () => {
     window.print();
   };
 
-  const propertyTypes = ['Alugado', 'Próprio', 'Situação de rua']
+  const propertyTypes = [
+    "Outro",
+    "Situação de Rua",
+    "Ocupação",
+    "Cedido",
+    "Arrendado",
+    "Alugado",
+    "Financiado",
+    "Próprio"
+  ];
+
 
   return (
     <div className="max-w-4xl mx-auto p-4 bg-white">

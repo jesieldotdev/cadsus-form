@@ -30,6 +30,28 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
 
   const memberTypes = ['Responsável', 'Irmão/irmã', 'Pai', 'Mãe', 'Filho(a)', 'Genro/Nora', 'Cônjuge', 'Neto(a)/Bisneto(a)', 'Sogro(a)', 'Enteado(a)', 'Outro'];
 
+  const scolarity = [
+    "ALFABETIZAÇÃO PARA ADULTOS (MOBRAL, ETC)",
+    "CLASSE DE ALFABETIZAÇÃO - CA",
+    "CRECHE",
+    "ENSINO FUNDAMENTAL COMPLETO",
+    "ENSINO FUNDAMENTAL EJA - SÉRIES FINAIS (SUPLETIVO 5ª a 9ª))",
+    "ENSINO FUNDAMENTAL EJA - SÉRIES INICIAIS (SUPLETIVO 1ª a 4ª)",
+    "ENSINO FUNDAMENTAL ESPECIAL",
+    "ENSINO FUNDAMENTAL 1ª a 4ª SÉRIES",
+    "ENSINO FUNDAMENTAL 5ª a 9ª SÉRIES",
+    "ENSINO MÉDIO EJA (SUPLETIVO)",
+    "ENSINO MÉDIO ESPECIAL",
+    "ENSINO MÉDIO, MÉDIO 2º CICLO (CIENTÍFICO, TÉCNICO E ETC)",
+    "FUNDAMENTAL 1A A 4A COMPLETO",
+    "NENHUM",
+    "PRÉ-ESCOLA (EXCETO CA)",
+    "SUPERIOR, APERFEIÇOAMENTO, ESPECIALIZAÇÃO, MESTRADO, DOUTORADO"
+  ];
+
+  const skinTones = ["Branco", "Preto", "Pardo", "Amarelo", "Indigena"];
+
+
   return (
     <div className="space-y-4 p-4 border rounded-md shadow-md mb-4 text-sm">
       <div className="flex justify-between items-center">
@@ -59,7 +81,7 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
           <div className="w-1/2">
             <label className="block text-gray-700">Nome</label>
             <input
-            placeholder='João Niguém'
+              placeholder='João Niguém'
               type="text"
               name="nome"
               value={memberData.nome}
@@ -103,7 +125,7 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
           </div>
         </div>
         <div className="flex space-x-4">
-          <div className="w-1/3">
+          <div className="w-2/4">
             <label className="block text-gray-700">Nascimento</label>
             <input
               type="date"
@@ -113,18 +135,12 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
               className="mt-1 block w-full px-3 py-2 border rounded-md text-gray-900 text-sm"
             />
           </div>
+       
 
-          <div className="w-1/3">
-            <label className="block text-gray-700">Escolaridade</label>
-            <input
-              type="text"
-              name="escolaridade"
-              value={memberData.escolaridade}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border rounded-md text-gray-900 text-sm"
-            />
-          </div>
-          <div className="w-1/3">
+       
+
+
+          <div className="w-2/4">
             <label className="block text-gray-700">Ocupação</label>
             <input
               type="text"
@@ -137,8 +153,22 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
 
         </div>
 
+        <div className='1/3'>
+            <label className="block text-gray-700">Tipo de Membro</label>
+            <select
+              name="tipo"
+              value={memberData.tipo}
+              onChange={handleChange}
+              className="mt-1 block w-full px-3 py-2 border rounded-md text-gray-900 text-sm"
+            >
+              {scolarity.map((level, idx) => (
+                <option key={idx} value={memberData.escolaridade}>{level}</option>
+              ))}
+            </select>
+          </div>
+
         <div className="flex space-x-4">
-          <div className="w-1/3">
+          <div className="w-2/4">
             <label className="block text-gray-700">Naturalidade</label>
             <input
               type="text"
@@ -149,17 +179,15 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
             />
 
           </div>
-          <div className="w-1/3">
+          <div className="w-2/4">
             <label className="block text-gray-700">Cor</label>
             <select
               name="propertyType"
               className="mt-1 block w-full px-3 py-2 border rounded-md text-gray-900 text-sm"
             >
-              <option value="Branco">Branco</option>
-              <option value="Preto">Preto</option>
-              <option value="Pardo">Pardo</option>
-              <option value="Amarelo">Amarelo</option>
-              <option value="Indigena">Indigena</option>
+            {skinTones.map((tone, idx) => (
+                <option key={idx} value={memberData.cor}>{tone}</option>
+              ))}
             </select>
           </div>
 
