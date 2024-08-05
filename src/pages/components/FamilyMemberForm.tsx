@@ -1,4 +1,5 @@
 import React from 'react';
+import NaturalidadeInput from './Naturality';
 
 interface FamilyMemberFormProps {
   index: number;
@@ -168,17 +169,10 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
           </div>
 
         <div className="flex space-x-4">
-          <div className="w-2/4">
-            <label className="block text-gray-700">Naturalidade</label>
-            <input
-              type="text"
-              name="naturalidade"
-              value={memberData.naturalidade}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border rounded-md text-gray-900 text-sm"
-            />
 
-          </div>
+<NaturalidadeInput handleChange={handleChange} memberData={memberData} />
+          
+        
           <div className="w-2/4">
             <label className="block text-gray-700">Cor</label>
             <select
