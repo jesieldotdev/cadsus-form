@@ -73,6 +73,7 @@ const Form: React.FC = () => {
   };
 
   const printForm = () => {
+    document.title = `Cadastro - ${address}`;
     window.print();
   };
 
