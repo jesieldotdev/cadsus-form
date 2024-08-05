@@ -103,7 +103,7 @@ const Form: React.FC = () => {
               type="text"
               name="endereco"
               value={address}
-              placeholder='Rua qualquer, n000'
+              placeholder='Rua qualquer, n77...'
               onChange={handleAddressChange}
               className="mt-1 block w-full px-3 py-2 border rounded-md text-gray-900"
             />
