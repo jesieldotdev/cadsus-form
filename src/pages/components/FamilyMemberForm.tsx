@@ -52,11 +52,10 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
 
   const skinTones = ["Branco", "Preto", "Pardo", "Amarelo", "Indigena"];
 
-
   return (
     <div className="space-y-4 p-4 border rounded-md shadow-md mb-4 text-sm">
       <div className="flex justify-between items-center">
-        <h2 className="text-lg font-semibold">Membro {index + 1}</h2>
+        <h2 className="text-lg font-semibold">{memberData.tipo || 'Membro'} {index + 1}</h2>
         <button
           onClick={() => removeMember(index)}
           className="text-red-500 hover:text-red-700"
