@@ -1,60 +1,79 @@
 import { useRef } from "react";
 import html2pdf from "html2pdf.js";
 
-export function UserProfiles() {
+
+
+interface DataProps{
+    data: Data
+}
+
+export function UserProfiles({data}: DataProps) {
   const printRef = useRef(null);
 
-  // Lista de usuários com informações
-  const users = [
-    {
-      nome: "João da Silva",
-      idade: 29,
-      email: "joao.silva@example.com",
-      endereco: "Rua Exemplo, 123, Bairro, Cidade, Estado, CEP 12345-678",
-      telefone: "(11) 1234-5678"
-    },
-    {
-      nome: "Maria Oliveira",
-      idade: 34,
-      email: "maria.oliveira@example.com",
-      endereco: "Avenida Central, 456, Bairro, Cidade, Estado, CEP 23456-789",
-      telefone: "(21) 2345-6789"
-    },
-    {
-      nome: "Carlos Souza",
-      idade: 40,
-      email: "carlos.souza@example.com",
-      endereco: "Rua das Flores, 789, Bairro, Cidade, Estado, CEP 34567-890",
-      telefone: "(31) 3456-7890"
-    }
-  ];
+  // Dados dos usuários
+//   const data = {
+//     homeAddress: 'Rua Beija Flor, n 440, São Bento, Roraima - Brasil',
+//     homePhone: '95991712353',
+//     residentsQuantity: 2,
+//     propertyType: 'Alugado',
+//     animalQuantity: '2',
+//     animalType: 'Cachorro e gato',
+//     members: [
+//       {
+//         tipo: '',
+//         nome: 'Jesiel Gomes Da Silva',
+//         sus: '704.0028.5668.3069',
+//         mae: 'Nair Pereira',
+//         pai: 'dfg',
+//       },
+//       {
+//         tipo: '',
+//         nome: 'Ana Gomes Da Silva',
+//         sus: '704.0028.5668.3070',
+//         mae: 'Nair Pereira',
+//         pai: 'dfg',
+//       },
+//     ]
+//   };
 
   const handlePrint = () => {
     html2pdf()
       .from(printRef.current)
-      .save("usuarios.pdf");
+      .save("ficha_usuarios.pdf");
   };
 
   return (
-    <div className="flex justify-center">
-      <div ref={printRef} style={{ margin: '32px', fontSize: '10px', lineHeight: '1.4' }}>
-        <h2 style={{ textAlign: 'center', fontSize: '14px', marginBottom: '12px' }}>Ficha de Usuários</h2>
-        
-        {users.map((user, index) => (
-          <div key={index} style={{ marginBottom: '16px', padding: '8px', border: '1px solid #ccc', borderRadius: '4px' }}>
-            <h3 style={{ fontSize: '12px', marginBottom: '8px' }}>Usuário {index + 1}</h3>
-            <p><strong>Nome:</strong> {user.nome}</p>
-            <p><strong>Idade:</strong> {user.idade} anos</p>
-            <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Endereço:</strong> {user.endereco}</p>
-            <p><strong>Telefone:</strong> {user.telefone}</p>
+    <div className="flex justify-center bg-white p-4">
+      <div ref={printRef} className="bg-white p-4" style={{ fontSize: '10px', width: '100%', margin: '32px' }}>
+        <h3 className="mb-4"><strong>Ficha Domiciliar</strong></h3>
+
+        {/* Endereço e detalhes do domicílio */}
+        <div className="border p-2 rounded-md">
+          <p><strong>Endereço: </strong>{data.homeAddress}</p>
+          <p><strong>Telefone: </strong>{data.homePhone}</p>
+          <p><strong>Quantidade de moradores: </strong>{data.residentsQuantity}</p>
+          <p><strong>Tipo de propriedade: </strong>{data.propertyType}</p>
+          <p><strong>Quantidade de animais: </strong>{data.animalQuantity}</p>
+          <p><strong>Tipo de animais: </strong>{data.animalType}</p>
+        </div>
+
+        {!!data.members.length && <h3 className="mt-4"><strong>Moradores: </strong></h3>}
+        {data.members.map((member, index) => (
+          <div key={index} style={{ marginBottom: '12px' }} className="border p-2 rounded-md">
+            <p><strong>Nome: </strong>{member.nome}</p>
+            <p><strong>Tipo: </strong>{member.tipo || 'Não especificado'}</p>
+            <p><strong>SUS: </strong>{member.sus}</p>
+            <p><strong>Mãe: </strong>{member.mae}</p>
+            <p><strong>Pai: </strong>{member.pai}</p>
           </div>
         ))}
 
-        <button onClick={handlePrint} style={{ marginTop: '20px', padding: '8px 16px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '4px' }}>
+
+      </div>
+              {/* Botão para gerar o PDF */}
+              <button onClick={handlePrint} style={{ marginTop: '20px', padding: '8px 16px', backgroundColor: '#007bff', color: '#fff', border: 'none', cursor: 'pointer' }}>
           Gerar PDF
         </button>
-      </div>
     </div>
   );
 }

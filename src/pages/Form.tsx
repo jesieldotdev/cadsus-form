@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 import FamilyMemberForm from './components/FamilyMemberForm';
+import { UserProfiles } from './Print';
 
 interface FamilyMember {
   tipo: string;
@@ -29,6 +30,19 @@ const Form: React.FC = () => {
   const addMember = () => {
     setMembers([...members, { tipo: '', nome: '', sus: '', mae: '', pai: '', naturalidade: '', ocupacao: '', escolaridade: '', observacao: '', nascimento: '', cor:'' }]);
   };
+
+  const data: Data = {
+    homeAddress: address,
+    homePhone: phone,
+    residentsQuantity: residents,
+    propertyType,
+    animalQuantity,
+    animalType,
+    members,
+    roomsQuantity: rooms
+  }
+
+  console.log(data)
 
   const removeMember = (index: number) => {
     setMembers(members.filter((_, i) => i !== index));
@@ -91,6 +105,7 @@ const Form: React.FC = () => {
 
 
   return (
+    <>
     <div className="max-w-4xl mx-auto p-4 bg-white">
       <h1 className="text-2xl font-bold mb-4">Formulário da Família</h1>
       <div className="mb-4 space-y-2">
@@ -197,6 +212,9 @@ const Form: React.FC = () => {
       <button onClick={exportToExcel} className="mt-4 ml-2 px-4 py-2 bg-green-500 text-white rounded-md">Exportar para Excel</button>
       <button onClick={printForm} className="mt-4 ml-2 px-4 py-2 bg-gray-500 text-white rounded-md">Imprimir</button>
     </div>
+
+  {data && data.homeAddress &&  <UserProfiles data={data}/>}
+    </>
   );
 };
 
