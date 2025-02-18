@@ -39,7 +39,7 @@ export function UserProfiles({data}: DataProps) {
   const handlePrint = () => {
     html2pdf()
       .from(printRef.current)
-      .save("ficha_usuarios.pdf");
+      .save(`ficha_domiciliar-${data.homeAddress}.pdf`);
   };
 
   return (
@@ -71,7 +71,7 @@ export function UserProfiles({data}: DataProps) {
 
       </div>
               {/* Botão para gerar o PDF */}
-              <button onClick={handlePrint} style={{ marginTop: '20px', padding: '8px 16px', backgroundColor: '#007bff', color: '#fff', border: 'none', cursor: 'pointer' }}>
+              <button onClick={handlePrint} style={{ marginTop: '20px', padding: '8px 16px', backgroundColor: '#007bff', color: '#fff', border: 'none', cursor: 'pointer', borderRadius: '4px' }}>
           Gerar PDF
         </button>
     </div>
