@@ -209,8 +209,8 @@ const Form: React.FC = () => {
         />
       ))}
       <button onClick={addMember} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md">Adicionar Membro</button>
-      {/* <button onClick={exportToExcel} className="mt-4 ml-2 px-4 py-2 bg-green-500 text-white rounded-md">Exportar para Excel</button>
-      <button onClick={printForm} className="mt-4 ml-2 px-4 py-2 bg-gray-500 text-white rounded-md">Imprimir</button> */}
+      <button onClick={exportToExcel} className="mt-4 ml-2 px-4 py-2 bg-green-500 text-white rounded-md">Exportar para Excel</button>
+      <button onClick={printForm} className="mt-4 ml-2 px-4 py-2 bg-gray-500 text-white rounded-md">Imprimir</button> 
     </div>
 
   {data && data.homeAddress &&  <UserProfiles data={data}/>}
