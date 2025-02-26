@@ -1,7 +1,10 @@
-import { getDefaultDomicileItem } from "./utils";
+import { defaultExtraData, defaultHealthInfo, getDefaultDomicileItem } from "./utils";
 
 export const initialDomicileState = (): DomicileState=>(
     {
+      extraData: defaultExtraData,
+      familyMembers:[],
+      healthForm: defaultHealthInfo,
       items: [],
       formState: getDefaultDomicileItem(),
       individualModalTable: false,

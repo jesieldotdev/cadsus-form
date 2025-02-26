@@ -2,67 +2,105 @@ import { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 import dataItems from './data';
 import useStore from '../../hooks/useStore';
-import debounce from 'lodash/debounce'; // Importa debounce do lodash
+import { defaultMemberInfo } from '../../store/domicile/utils';
+import _ from "lodash";
+
 
 export const ControllerForm = () => {
   const [, actions, select] = useStore();
   const { domicile: { setDomicile } } = actions;
 
+  // Dividindo o estado
   const formState = select('domicile.formState');
-  
-  const [localState, setLocalState] = useState<DomicileItem>(formState);
+  const extraDataState = select('domicile.extraData');
+  const healthState = select('domicile.healthForm');
+  const familyMembersState = select('domicile.familyMembers');
 
-  // Debounced function to sync local state with global state
-  const debouncedSetDomicile = debounce((updatedState: DomicileItem) => {
+  // Estados locais separados
+  const [localFormState, setLocalFormState] = useState(formState);
+  const [localExtraDataState, setLocalExtraDataState] = useState(extraDataState);
+  const [localHealthState, setLocalHealthState] = useState(healthState);
+
+  // Debounce para salvar o estado
+  const debouncedSetDomicile = _.debounce((updatedState) => {
     setDomicile('formState', updatedState);
-  }, 4000); // O delay é de 500ms, ajustável conforme necessário.
+  }, 4000);
 
-  // UseEffect to update global state with debounce
+  // Efeito para sincronizar formState
   useEffect(() => {
-    debouncedSetDomicile(localState); // Só chama quando o debounce finaliza
+    if (!_.isEqual(localFormState, formState)) {
+      debouncedSetDomicile(localFormState);
+    }
     return () => {
-      debouncedSetDomicile.cancel(); // Cancela o debounce quando o componente é desmontado
+      debouncedSetDomicile.cancel();
     };
-  }, [localState]); // Sempre que localState mudar, a função debounced é chamada
+  }, [localFormState, formState]);
 
-  const { familyMembers, extraData, homeAddress, phone } = localState;
+  // Lógica similar para extraData e healthState
+  useEffect(() => {
+    if (!_.isEqual(localExtraDataState, extraDataState)) {
+      setDomicile('extraData', localExtraDataState);
+    }
+  }, [localExtraDataState, extraDataState]);
 
+  useEffect(() => {
+    if (!_.isEqual(localHealthState, healthState)) {
+      setDomicile('healthForm', localHealthState);
+    }
+  }, [localHealthState, healthState]);
+
+  // Manipuladores de entrada
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setLocalState(prevState => ({
+    setLocalFormState(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleExtraDataChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setLocalExtraDataState(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleHealthChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setLocalHealthState(prevState => ({
       ...prevState,
       [name]: value
     }));
   };
 
   const addMember = () => {
-    setLocalState(prevState => ({
+    setLocalFormState(prevState => ({
       ...prevState,
-      familyMembers: [
-        ...familyMembers,
-        { type: '', name: '', sus: '', mother: '', father: '', naturalFrom: '', occupation: '', degreeOfStudy: '', observation: '', skinTone: '', dateOfBirth: '', healthInfo: undefined }
-      ]
+      familyMembers: prevState.familyMembers.length === 0 
+        ? [defaultMemberInfo] // Se a lista estiver vazia, adiciona o membro padrão
+        : [...prevState.familyMembers, defaultMemberInfo] // Caso contrário, adiciona ao final
     }));
   };
 
   const removeMember = (index: number) => {
-    setLocalState(prevState => ({
+    setLocalFormState(prevState => ({
       ...prevState,
-      familyMembers: familyMembers.filter((_, i) => i !== index),
+      familyMembers: prevState.familyMembers.filter((_, i) => i !== index),
     }));
   };
 
   const handleMemberInputChange = (index: number, field: keyof Member, value: string) => {
-    const updatedMembers = [...familyMembers];
+    const updatedMembers = [...localFormState.familyMembers];
     updatedMembers[index] = { ...updatedMembers[index], [field]: value };
-    setLocalState(prevState => ({
+    setLocalFormState(prevState => ({
       ...prevState,
       familyMembers: updatedMembers,
     }));
   };
 
   const exportToExcel = () => {
-    const ws = XLSX.utils.json_to_sheet(familyMembers);
+    const ws = XLSX.utils.json_to_sheet(localFormState.familyMembers);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Cadastro - Familia');
     XLSX.writeFile(wb, 'Cadastro_Familia.xlsx');
@@ -73,13 +111,13 @@ export const ControllerForm = () => {
     window.print();
   };
 
-
+  // Formulários dinâmicos
   const formFields = [
     {
       label: 'Endereço',
       name: 'homeAddress',
       type: 'text',
-      value: homeAddress,
+      value: localFormState.homeAddress,
       handleChange: handleInputChange,
       placeholder: "Rua qualquer, n77..."
     },
@@ -87,52 +125,63 @@ export const ControllerForm = () => {
       label: 'Tel. Contato',
       name: 'phone',
       type: 'tel',
-      value: phone,
+      value: localFormState.phone,
       handleChange: handleInputChange,
       placeholder: "99 99999-9999"
     },
     {
+      label: 'Reside desde',
+      name: 'hasLivedSince',
+      type: 'date',
+      value: localExtraDataState.hasLivedSince,
+      handleChange: handleExtraDataChange,
+    },
+  ];
+
+  const extraDataFields = [
+    {
       label: 'Qt. de moradores',
       name: 'residentsQuantity',
       type: 'number',
-      value: extraData.residentsQuantity,
-      handleChange: handleInputChange,
+      value: localExtraDataState.residentsQuantity,
+      handleChange: handleExtraDataChange,
     },
     {
       label: 'Qt. de cômodos',
       name: 'roomsQuantity',
       type: 'number',
-      value: extraData.roomsQuantity,
-      handleChange: handleInputChange,
+      value: localExtraDataState.roomsQuantity,
+      handleChange: handleExtraDataChange,
     },
     {
       label: 'Tipo de imóvel',
       name: 'propertyType',
       type: 'select',
-      value: extraData.propertyType,
+      value: localExtraDataState.propertyType,
       options: dataItems.propertyTypes,
-      handleChange: handleInputChange,
+      handleChange: handleExtraDataChange,
     },
     {
       label: 'Animais?',
       name: 'animalTypes',
       type: 'text',
-      value: extraData.animalTypes,
-      handleChange: handleInputChange,
+      value: localExtraDataState.animalTypes,
+      handleChange: handleExtraDataChange,
       placeholder: "Cachorro, Gato"
     },
     {
       label: 'Quantos?',
       name: 'animalQuantity',
       type: 'number',
-      value: extraData.animalQuantity,
-      handleChange: handleInputChange,
+      value: localExtraDataState.animalQuantity,
+      handleChange: handleExtraDataChange,
     },
+   
   ];
 
   return {
     dataItems,
-    formState: localState, // Retorna o estado local
+    formState: localFormState,
     addMember,
     removeMember,
     handleMemberInputChange,
@@ -140,6 +189,8 @@ export const ControllerForm = () => {
     exportToExcel,
     printForm,
     formFields,
-    familyMembers
+    extraDataFields,
+    familyMembersState: localFormState.familyMembers, // Usar localFormState.familyMembers
   };
 };
+

@@ -7,30 +7,27 @@ import { BreadCrumb } from '../../components/BreadCrumb';
 
 const Form: React.FC = () => {
   const {
-    familyMembers,
- 
+    familyMembersState,
     addMember,
     removeMember,
     handleMemberInputChange,
-    
     exportToExcel,
     printForm,
     formFields,
-    formState
+    formState,
   } = ControllerForm();
 
-
+  console.log(familyMembersState)
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <BreadCrumb actualPageTitle='Novo Cadastro' />
+      <BreadCrumb actualPageTitle="Novo Cadastro" />
 
       <h1 className="text-2xl font-bold text-indigo-700 mb-6">Formulário de Cadastro da Família</h1>
       <div className="space-y-6">
-
         {/* Renderizando os campos dinamicamente */}
         {formFields.map((field, idx) => (
-          <div key={idx} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div key={field.name || idx} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-gray-700">{field.label}</label>
               {field.type === 'select' ? (
@@ -58,8 +55,8 @@ const Form: React.FC = () => {
           </div>
         ))}
 
-        {/* Adicionar Membro */}
-        {!!familyMembers && familyMembers.map((member, index) => (
+        {/* Renderizando os membros da família */}
+        { familyMembersState.map((member, index) => (
           <FamilyMemberForm
             key={index}
             index={index}
@@ -74,16 +71,26 @@ const Form: React.FC = () => {
         >
           Adicionar Membro
         </button>
-
       </div>
 
       {/* UserProfiles Component */}
       {formState && formState.homeAddress && <UserProfiles formState={formState} />}
 
-      {/* Optional: Buttons to export or print */}
+      {/* Botões de exportação ou impressão */}
       <div className="mt-6 flex space-x-4">
-        <button onClick={exportToExcel} className="px-6 py-3 bg-green-500 text-white rounded-md hover:bg-green-600">Exportar para Excel</button>
-        <button onClick={printForm} className="px-6 py-3 bg-gray-500 text-white rounded-md hover:bg-gray-600">Imprimir</button>
+        <button
+          onClick={exportToExcel}
+          className={`px-6 py-3 ${familyMembersState.length === 0 ? 'bg-gray-500' : 'bg-green-500'} text-white rounded-md hover:bg-green-600`}
+          disabled={familyMembersState.length === 0} // Desabilita se não houver membros
+        >
+          Exportar para Excel
+        </button>
+        <button
+          onClick={printForm}
+          className="px-6 py-3 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+        >
+          Imprimir
+        </button>
       </div>
     </div>
   );

@@ -1,76 +1,80 @@
 type DomicileState = {
   items: DomicileItem[];
-  formState: DomicileItem
+  formState: DomicileItem;
+  familyMembers: Member[]
+  healthForm: HealthForm
+  extraData: DomicileExtraForm
   selectedItemIndex: number;
   searchText: string;
   individualModalTable: boolean;
   filter: {
-    member : Member | undefined
-    domicile: DomicileItem | undefined
-  }
+    member?: Member | string;
+    domicile?: DomicileItem ;
+  };
 };
 
 type DomicileItem = {
-  id: string
-  homeAddress: string | undefined;
+  id: string;
+  homeAddress: string;
   phone: string;
   extraData: DomicileExtraForm;
   familyMembers: Member[];
 };
 
 type Member = {
-  name: string | undefined;
-  type: string | undefined;
-  sus: string | undefined;
-  dateOfBirth: string | undefined;
-  skinTone: string | undefined;
-  father: string | undefined;
-  mother: string | undefined;
-  degreeOfStudy: string | undefined;
-  occupation: string | undefined;
-  healthInfo: HealthForm | undefined
-  naturalFrom: string | undefined
-  observation: string | undefined
+  name: string;
+  type: string;
+  sus: string;
+  dateOfBirth: string;
+  skinTone: string;
+  father: string;
+  mother: string;
+  degreeOfStudy: string;
+  occupation: string;
+  healthInfo: HealthForm;
+  naturalFrom: string;
+  observation: string;
 };
 
 type HealthForm = {
   isPregnant: boolean;
-  referenceMaternity: string | undefined;
-  healthStatus: 'Abaixo do Peso' | 'Peso Adequado' | 'Acima do Peso' | undefined;
+  referenceMaternity: string;
+  healthStatus: 'Abaixo do Peso' | 'Peso Adequado' | 'Acima do Peso' | string;
   usesOtherDrugs: boolean;
   hasHypertension: boolean;
   hasDiabetes: boolean;
   hadStroke: boolean;
   hadHeartAttack: boolean;
   hasHeartDisease: boolean;
-  heartDiseaseType: 'Insuficiencia Cardiac' | 'Outro' | 'Nao Sabe' | undefined;
+  heartDiseaseType: 'Insuficiencia Cardiac' | 'Outro' | 'Nao Sabe' | string;
   hasRespiratoryDisease: boolean;
-  respiratoryDiseaseType: 'Asma' | 'DPOC / Enfisema' | 'Outro' | 'Nao Sabe' | undefined;
+  respiratoryDiseaseType: 'Asma' | 'DPOC / Enfisema' | 'Outro' | 'Nao Sabe' | string;
   isSmoker: boolean;
   usesAlcohol: boolean;
   hasKidneyProblems: boolean;
-  kidneyProblemType: 'Insuficiencia Renal' | 'Outro' | 'Nao Sabe' | undefined;
+  kidneyProblemType: 'Insuficiencia Renal' | 'Outro' | 'Nao Sabe' | string;
   hasLeprosy: boolean;
   hasCancer: boolean;
   hasTuberculosis: boolean;
   hadHospitalizationInLast12Months: boolean;
-  hospitalizationCause: string | undefined;
+  hospitalizationCause: string;
   hadMentalHealthDiagnosis: boolean;
   isBedridden: boolean;
   usesMedicinalPlants: boolean;
-  medicinalPlants: string | undefined;
+  medicinalPlants: string;
   usesOtherIntegrativePractices: boolean;
   isDomiciled: boolean;
-  otherHealthConditions: Array<string | undefined>;
+  otherHealthConditions: Array<string>;
 };
 
+
 type DomicileExtraForm = {
-  waterSupply: 'Rede encanada até o domicílio' | 'Poço artesiano' | 'Outra' | undefined;
-  waterTreatment: 'Sem tratamento' | 'Com tratamento' | undefined;
-  animalTypes: 'Gato' | 'Cachorro' | 'Passaro' | 'De Criação' | 'Outros' | undefined;
-  hasLivedSince: string | undefined;
-  residenceType: 'Casa' | 'Apartamento' | 'Outro' | undefined;
-  accessToResidenceType: 'Asfalto' | 'Pavimento' | 'Chão' | 'Batido' | 'Fluvial' | 'Outro' | undefined;
+  waterSupply: 'Rede encanada até o domicílio' | 'Poço artesiano' | 'Outra' | string;
+  waterTreatment: 'Sem tratamento' | 'Com tratamento' | string;
+  animalTypes: 'Gato' | 'Cachorro' | 'Passaro' | 'De Criação' | 'Outros' | string;
+  hasLivedSince: string;
+  residenceType: 'Casa' | 'Apartamento' | 'Outro' | string;
+  accessToResidenceType: 'Asfalto' | 'Pavimento' | 'Chão' | 'Batido' | 'Fluvial' | 'Outro' | string;
   predominantConstructionMaterial:
     | 'Alvenaria/Tijolo com Revestimento'
     | 'Alvenaria/Tijolo sem Revestimento'
@@ -80,10 +84,10 @@ type DomicileExtraForm = {
     | 'Madeira Aproveitado'
     | 'Palha'
     | 'Outro Material'
-    | undefined;
+    | string;
   electricityAvailability: boolean;
-  residentsQuantity: number | undefined;
-  propertyType: 'Próprio' | 'Alugado' | 'Financiado' | 'Outro' | undefined;
-  animalQuantity: number | undefined;
-  roomsQuantity: number | undefined;
+  residentsQuantity: number;
+  propertyType: 'Próprio' | 'Alugado' | 'Financiado' | 'Outro' | string;
+  animalQuantity: number;
+  roomsQuantity: number;
 };

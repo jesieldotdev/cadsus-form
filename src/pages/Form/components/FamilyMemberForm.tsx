@@ -11,11 +11,18 @@ interface FamilyMemberFormProps {
 }
 
 const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember, handleInputChange, memberData }) => {
+
+  console.log('Family Members:', memberData);
+  
+
   const {
-    handleChange,
+    // handleChange,
     formFields
   } = ControllerMemberForm({ handleInputChange, memberData, index, removeMember });
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    handleInputChange(index, e.target.name, e.target.value);
+  };
 
   return (
     <div className="space-y-4 p-4 border rounded-md shadow-md mb-4 text-sm bg-gray-50">
@@ -37,7 +44,7 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
             <select
               name={field.name}
               value={field.value}
-              onChange={field.handleChange}
+              onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border rounded-md text-gray-900 text-sm"
             >
               {field.options?.map((option, optionIdx) => (
@@ -50,7 +57,7 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
             <textarea
               name={field.name}
               value={field.value}
-              onChange={field.handleChange}
+              onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border rounded-md text-gray-900 text-sm"
             ></textarea>
           ) : (
@@ -58,7 +65,7 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
               type={field.type}
               name={field.name}
               value={field.value}
-              onChange={field.handleChange}
+              onChange={handleChange}
               className="mt-1 block w-full px-4 py-2 border rounded-md text-gray-900 text-sm"
             />
           )}

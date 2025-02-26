@@ -1,63 +1,85 @@
 export const getDefaultDomicileItem = (): DomicileItem => ({
   id: '0',
-  homeAddress: undefined,
+  homeAddress: '',
   phone: '',
   extraData: {
-    waterSupply: undefined,
-    waterTreatment: undefined,
-    animalTypes: [],
-    hasLivedSince: undefined,
-    residenceType: undefined,
-    accessToResidenceType: undefined,
-    predominantConstructionMaterial: undefined,
+    waterSupply: '',
+    waterTreatment: '',
+    animalTypes: '',
+    hasLivedSince: '',
+    residenceType: '',
+    accessToResidenceType: '',
+    predominantConstructionMaterial: '',
     electricityAvailability: false,
-    residentsQuantity: undefined,
-    propertyType: undefined,
-    animalQuantity: undefined,
-    roomsQuantity: undefined
+    residentsQuantity: 0,
+    propertyType: '',
+    animalQuantity: 0,
+    roomsQuantity: 0
   },
-  familyMembers: [
-    {
-      name: undefined,
-      type: undefined,
-      sus: undefined,
-      father: undefined,
-      mother: undefined,
-      degreeOfStudy: undefined,
-      occupation: undefined,
-      healthInfo: {
-        isPregnant: false,
-        referenceMaternity: undefined,
-        healthStatus: undefined,
-        usesOtherDrugs: false,
-        hasHypertension: false,
-        hasDiabetes: false,
-        hadStroke: false,
-        hadHeartAttack: false,
-        hasHeartDisease: false,
-        heartDiseaseType: undefined,
-        hasRespiratoryDisease: false,
-        respiratoryDiseaseType: undefined,
-        isSmoker: false,
-        usesAlcohol: false,
-        hasKidneyProblems: false,
-        kidneyProblemType: undefined,
-        hasLeprosy: false,
-        hasCancer: false,
-        hasTuberculosis: false,
-        hadHospitalizationInLast12Months: false,
-        hospitalizationCause: undefined,
-        hadMentalHealthDiagnosis: false,
-        isBedridden: false,
-        usesMedicinalPlants: false,
-        medicinalPlants: undefined,
-        usesOtherIntegrativePractices: false,
-        isDomiciled: false,
-        otherHealthConditions: []
-      }
-    }
-  ]
+  familyMembers: []
 });
+
+
+export const defaultHealthInfo: HealthForm = {
+  isPregnant: false,
+  referenceMaternity: '',
+  healthStatus: '', // Ou você pode deixar 'Peso Adequado' como valor inicial, se preferir
+  usesOtherDrugs: false,
+  hasHypertension: false,
+  hasDiabetes: false,
+  hadStroke: false,
+  hadHeartAttack: false,
+  hasHeartDisease: false,
+  heartDiseaseType: '', // Ou 'Nao Sabe', caso queira definir um valor padrão
+  hasRespiratoryDisease: false,
+  respiratoryDiseaseType: '', // Ou 'Nao Sabe'
+  isSmoker: false,
+  usesAlcohol: false,
+  hasKidneyProblems: false,
+  kidneyProblemType: '', // Ou 'Nao Sabe'
+  hasLeprosy: false,
+  hasCancer: false,
+  hasTuberculosis: false,
+  hadHospitalizationInLast12Months: false,
+  hospitalizationCause: '',
+  hadMentalHealthDiagnosis: false,
+  isBedridden: false,
+  usesMedicinalPlants: false,
+  medicinalPlants: '',
+  usesOtherIntegrativePractices: false,
+  isDomiciled: false,
+  otherHealthConditions: []
+};
+
+export const defaultMemberInfo: Member = {
+  name: '',
+  type: '',
+  sus: '',
+  dateOfBirth: '',
+  skinTone: '',
+  father: '',
+  mother: '',
+  degreeOfStudy: '',
+  occupation: '',
+  healthInfo: defaultHealthInfo, // Utiliza o valor padrão de HealthForm
+  naturalFrom: '',
+  observation: ''
+};
+
+export const defaultExtraData = {
+  waterSupply: '', // String vazia caso não tenha essa informação
+  waterTreatment: '', // String vazia caso não tenha essa informação
+  animalTypes: '', // String vazia caso não tenha essa informação
+  hasLivedSince: '', // String vazia caso não tenha essa informação
+  residenceType: '', // String vazia caso não tenha essa informação
+  accessToResidenceType: '', // String vazia caso não tenha essa informação
+  predominantConstructionMaterial: '', // String vazia caso não tenha essa informação
+  electricityAvailability: false, // Ou true, caso tenha eletricidade disponível
+  residentsQuantity: 1, // Número padrão de moradores
+  propertyType: '', // String vazia caso não tenha essa informação
+  animalQuantity: 0, // Quantidade de animais
+  roomsQuantity: 1 // Quantidade padrão de cômodos
+};
 
 
 
@@ -91,7 +113,7 @@ export const mockDomicileItem: DomicileItem[] = [
         "occupation": "Engenheiro",
         "healthInfo": {
           "isPregnant": false,
-          "referenceMaternity": undefined,
+          "referenceMaternity": '',
           "healthStatus": "Peso Adequado",
           "usesOtherDrugs": false,
           "hasHypertension": false,
@@ -99,22 +121,22 @@ export const mockDomicileItem: DomicileItem[] = [
           "hadStroke": false,
           "hadHeartAttack": false,
           "hasHeartDisease": false,
-          "heartDiseaseType": undefined,
+          "heartDiseaseType": '',
           "hasRespiratoryDisease": false,
-          "respiratoryDiseaseType": undefined,
+          "respiratoryDiseaseType": '',
           "isSmoker": false,
           "usesAlcohol": true,
           "hasKidneyProblems": false,
-          "kidneyProblemType": undefined,
+          "kidneyProblemType": '',
           "hasLeprosy": false,
           "hasCancer": false,
           "hasTuberculosis": false,
           "hadHospitalizationInLast12Months": false,
-          "hospitalizationCause": undefined,
+          "hospitalizationCause": '',
           "hadMentalHealthDiagnosis": false,
           "isBedridden": false,
           "usesMedicinalPlants": false,
-          "medicinalPlants": undefined,
+          "medicinalPlants": '',
           "usesOtherIntegrativePractices": false,
           "isDomiciled": true,
           "otherHealthConditions": []
@@ -151,7 +173,7 @@ export const mockDomicileItem: DomicileItem[] = [
         "occupation": "Professor",
         "healthInfo": {
           "isPregnant": false,
-          "referenceMaternity": undefined,
+          "referenceMaternity": '',
           "healthStatus": "Abaixo do Peso",
           "usesOtherDrugs": true,
           "hasHypertension": false,
@@ -159,13 +181,13 @@ export const mockDomicileItem: DomicileItem[] = [
           "hadStroke": false,
           "hadHeartAttack": false,
           "hasHeartDisease": false,
-          "heartDiseaseType": undefined,
+          "heartDiseaseType": '',
           "hasRespiratoryDisease": true,
           "respiratoryDiseaseType": "Asma",
           "isSmoker": true,
           "usesAlcohol": true,
           "hasKidneyProblems": false,
-          "kidneyProblemType": undefined,
+          "kidneyProblemType": '',
           "hasLeprosy": false,
           "hasCancer": false,
           "hasTuberculosis": false,
@@ -174,7 +196,7 @@ export const mockDomicileItem: DomicileItem[] = [
           "hadMentalHealthDiagnosis": true,
           "isBedridden": false,
           "usesMedicinalPlants": false,
-          "medicinalPlants": undefined,
+          "medicinalPlants": '',
           "usesOtherIntegrativePractices": false,
           "isDomiciled": true,
           "otherHealthConditions": ["Hipotireoidismo"]
@@ -211,7 +233,7 @@ export const mockDomicileItem: DomicileItem[] = [
         "occupation": "Estudante",
         "healthInfo": {
           "isPregnant": false,
-          "referenceMaternity": undefined,
+          "referenceMaternity": '',
           "healthStatus": "Peso Adequado",
           "usesOtherDrugs": false,
           "hasHypertension": false,
@@ -219,22 +241,22 @@ export const mockDomicileItem: DomicileItem[] = [
           "hadStroke": false,
           "hadHeartAttack": false,
           "hasHeartDisease": false,
-          "heartDiseaseType": undefined,
+          "heartDiseaseType": '',
           "hasRespiratoryDisease": false,
-          "respiratoryDiseaseType": undefined,
+          "respiratoryDiseaseType": '',
           "isSmoker": false,
           "usesAlcohol": false,
           "hasKidneyProblems": false,
-          "kidneyProblemType": undefined,
+          "kidneyProblemType": '',
           "hasLeprosy": false,
           "hasCancer": false,
           "hasTuberculosis": false,
           "hadHospitalizationInLast12Months": false,
-          "hospitalizationCause": undefined,
+          "hospitalizationCause": '',
           "hadMentalHealthDiagnosis": false,
           "isBedridden": false,
           "usesMedicinalPlants": false,
-          "medicinalPlants": undefined,
+          "medicinalPlants": '',
           "usesOtherIntegrativePractices": false,
           "isDomiciled": true,
           "otherHealthConditions": []
@@ -243,3 +265,4 @@ export const mockDomicileItem: DomicileItem[] = [
     ]
   }
 ]
+

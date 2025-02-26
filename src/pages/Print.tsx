@@ -10,7 +10,6 @@ export function UserProfiles({
 }: UserProfiles) {
   const printRef = useRef(null);
 
-  console.log(formState.familyMembers)
 
   const handlePrint = () => {
     html2pdf()
