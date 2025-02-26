@@ -7,18 +7,21 @@ interface Domicile {
   homeAddress: string | undefined;
   phone: string | undefined;
   residentsQuantity: number | undefined;
+  id: string; // Adicionando um ID único para cada domicílio
 }
 
 const DomicileListData: Domicile[] = mockDomicileItem.map(item => ({
   homeAddress: item.homeAddress,
   phone: item.phone,
   residentsQuantity: item.extraData.residentsQuantity,
+  id: item.id, // Adicionando um ID único de cada domicílio
 }));
 
 const DomicileList: React.FC = () => {
   const navigate = useNavigate(); // Usando o useNavigate
 
   const [searchQuery, setSearchQuery] = useState<string>('');
+  
   const handleBack = () => {
     navigate(-1); // Volta para a página anterior
   };
@@ -32,6 +35,11 @@ const DomicileList: React.FC = () => {
     domicilio.phone?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     domicilio.residentsQuantity?.toString().includes(searchQuery)
   );
+
+  const handleDomicileClick = (domicileId: string) => {
+    // Navega para a página de detalhes do domicílio com o ID
+    navigate(`/domicile/${domicileId}`);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -65,7 +73,8 @@ const DomicileList: React.FC = () => {
           filteredDomicileList.map((domicilio, index) => (
             <div
               key={index}
-              className="bg-white p-4 rounded-lg shadow-md flex flex-col space-y-2"
+              onClick={() => handleDomicileClick(domicilio.id)} // Função onClick para redirecionar
+              className="bg-white p-4 rounded-lg shadow-md flex flex-col space-y-2 cursor-pointer hover:bg-gray-100"
             >
               <div className="flex items-center space-x-3">
                 <MapPin className="text-indigo-600" size={20} />

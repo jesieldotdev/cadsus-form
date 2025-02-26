@@ -6,6 +6,7 @@ type DomicileState = {
 };
 
 type DomicileItem = {
+  id: string
   homeAddress: string | undefined;
   phone: string;
   extraData: DomicileExtraForm;
