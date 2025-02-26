@@ -58,10 +58,8 @@ export const getDomicileById =
       const domicile = state.domicile.items.find(item => item.id === id);
 
       if (domicile) {
-        console.log('Domicílio encontrado:', domicile);
         return domicile;
       } else {
-        console.log('Domicílio não encontrado.');
         return null;
       }
     };
@@ -75,12 +73,10 @@ export const getMemberBySUS =
       for (let domicile of state.domicile.items) {
         const member = domicile.familyMembers.find(member => member.sus === sus);
         if (member) {
-          console.log('Membro encontrado:', member);
           return member; 
         }
       }
 
-      console.log('Membro não encontrado.');
       return null; 
     };
 
@@ -94,7 +90,6 @@ export const getMemberBySUS =
     for (let domicile of state.domicile.items) {
       const member = domicile.familyMembers.find(member => member.sus === sus);
       if (member) {
-        console.log('Domicílio encontrado para o SUS:', domicile);
         return domicile; 
       }
     }

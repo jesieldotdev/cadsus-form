@@ -27,7 +27,7 @@ const MemberDetail: React.FC = () => {
 
   const domicile = sus ? getDomicileBySUS(sus) : null
 
-  console.log(domicile)
+  
 
   if (!member) {
     return <div>Membro não encontrado.</div>;

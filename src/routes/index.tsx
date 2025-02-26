@@ -3,6 +3,7 @@ import HomeDash from "../pages/HomeDash";
 import DomicileList from "../pages/DomicileList";
 import DomicileDetail from "../pages/DomicileDetail";
 import MemberDetail from "../pages/MemberDetail";
+import Form from "../pages/Form";
 
 export const routes: RouteObject[] = [
   {
@@ -23,6 +24,10 @@ export const routes: RouteObject[] = [
       {
         path: "/member/:sus",
         element: <MemberDetail   />,
+      },
+      {
+        path: "/new",
+        element: <Form   />,
       },
   
     ],

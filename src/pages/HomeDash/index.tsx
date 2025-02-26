@@ -7,7 +7,7 @@ const HomeDash: React.FC = () => {
       <div className="bg-white rounded-xl shadow-xl w-full max-w-lg p-8 space-y-6">
         <h1 className="text-4xl font-extrabold text-center text-indigo-700">Menu</h1>
         <div className="flex flex-col items-center space-y-4">
-          <MenuItem href="#novoDomicilio" icon={<Home />} label="Novo Domicílio" />
+          <MenuItem href="/new" icon={<Home />} label="Novo Domicílio" />
           <MenuItem href="/list" icon={<List />} label="Lista de Domicílios" />
           <MenuItem href="#registraAtividade" icon={<ClipboardCheck />} label="Registra Atividade" />
         </div>
