@@ -5,23 +5,9 @@ import { UserProfiles } from '../Print';
 import { ControllerForm } from './viewController';
 import { BreadCrumb } from '../../components/BreadCrumb';
 
-interface FamilyMember {
-  tipo: string;
-  nome: string;
-  sus: string;
-  mae: string;
-  pai: string;
-  naturalidade: string;
-  ocupacao: string;
-  escolaridade: string;
-  observacao: string;
-  cor: string;
-  nascimento: Date | '';
-}
-
 const Form: React.FC = () => {
   const {
-    members,
+    familyMembers,
  
     addMember,
     removeMember,
@@ -29,8 +15,8 @@ const Form: React.FC = () => {
     
     exportToExcel,
     printForm,
-    data,
-    formFields
+    formFields,
+    formState
   } = ControllerForm();
 
 
@@ -73,7 +59,7 @@ const Form: React.FC = () => {
         ))}
 
         {/* Adicionar Membro */}
-        {!!members && members.map((member, index) => (
+        {!!familyMembers && familyMembers.map((member, index) => (
           <FamilyMemberForm
             key={index}
             index={index}
@@ -92,7 +78,7 @@ const Form: React.FC = () => {
       </div>
 
       {/* UserProfiles Component */}
-      {data && data.homeAddress && <UserProfiles data={data} />}
+      {formState && formState.homeAddress && <UserProfiles formState={formState} />}
 
       {/* Optional: Buttons to export or print */}
       <div className="mt-6 flex space-x-4">

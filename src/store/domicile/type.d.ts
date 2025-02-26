@@ -21,11 +21,15 @@ type Member = {
   name: string | undefined;
   type: string | undefined;
   sus: string | undefined;
+  dateOfBirth: string | undefined;
+  skinTone: string | undefined;
   father: string | undefined;
   mother: string | undefined;
   degreeOfStudy: string | undefined;
   occupation: string | undefined;
-  healthInfo: HealthForm;
+  healthInfo: HealthForm | undefined
+  naturalFrom: string | undefined
+  observation: string | undefined
 };
 
 type HealthForm = {
@@ -62,7 +66,7 @@ type HealthForm = {
 type DomicileExtraForm = {
   waterSupply: 'Rede encanada até o domicílio' | 'Poço artesiano' | 'Outra' | undefined;
   waterTreatment: 'Sem tratamento' | 'Com tratamento' | undefined;
-  animalTypes: ('Gato' | 'Cachorro' | 'Passaro' | 'De Criação' | 'Outros')[];
+  animalTypes: 'Gato' | 'Cachorro' | 'Passaro' | 'De Criação' | 'Outros' | undefined;
   hasLivedSince: string | undefined;
   residenceType: 'Casa' | 'Apartamento' | 'Outro' | undefined;
   accessToResidenceType: 'Asfalto' | 'Pavimento' | 'Chão' | 'Batido' | 'Fluvial' | 'Outro' | undefined;

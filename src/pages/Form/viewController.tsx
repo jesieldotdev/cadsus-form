@@ -2,37 +2,44 @@ import { useState } from 'react';
 import * as XLSX from 'xlsx';
 import dataItems from './data';
 
-interface FamilyMember {
-  tipo: string;
-  nome: string;
-  sus: string;
-  mae: string;
-  pai: string;
-  naturalidade: string;
-  ocupacao: string;
-  escolaridade: string;
-  observacao: string;
-  cor: string;
-  nascimento: Date | '';
-}
+// interface FamilyMember {
+//   tipo: string;
+//   nome: string;
+//   sus: string;
+//   mae: string;
+//   pai: string;
+//   naturalidade: string;
+//   ocupacao: string;
+//   escolaridade: string;
+//   observacao: string;
+//   cor: string;
+//   nascimento: Date | '';
+// }
 
 export const ControllerForm = () => {
-
-  // Estado geral
-  const [formState, setFormState] = useState({
-    members: [],
-    address: '',
+  const [formState, setFormState] = useState<DomicileItem>({
+    familyMembers: [],
+    id: '',
+    homeAddress: '',
     phone: '',
-    residents: 0,
-    propertyType: '',
-    animalType: '',
-    animalQuantity: 0,
-    rooms: 0,
+    extraData: {
+      accessToResidenceType: undefined,
+      animalQuantity: 0,
+      animalTypes: undefined,
+      electricityAvailability: false,
+      hasLivedSince: undefined,
+      predominantConstructionMaterial: undefined,
+      propertyType: undefined,
+      residenceType: undefined,
+      residentsQuantity: undefined,
+      roomsQuantity: 0,
+      waterSupply: undefined,
+      waterTreatment: undefined
+    }
   });
 
-  const { members, address, phone, residents, propertyType, animalType, animalQuantity, rooms } = formState;
+  const { familyMembers, extraData, homeAddress, phone } = formState;
 
-  // Função genérica para atualizar o estado
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormState(prevState => ({
@@ -41,13 +48,12 @@ export const ControllerForm = () => {
     }));
   };
 
-  // Funções de manipulação de membros
   const addMember = () => {
     setFormState(prevState => ({
       ...prevState,
-      members: [
-        ...members,
-        { tipo: '', nome: '', sus: '', mae: '', pai: '', naturalidade: '', ocupacao: '', escolaridade: '', observacao: '', nascimento: '', cor: '' }
+      familyMembers: [
+        ...familyMembers,
+        { type: '', name: '', sus: '', mother: '', father: '', naturality: '', occupation: '', degreeOfStudy: '', observation: '', naturalFrom: '', skinTone: '', dateOfBirth: '', healthInfo: undefined }
       ]
     }));
   };
@@ -55,50 +61,40 @@ export const ControllerForm = () => {
   const removeMember = (index: number) => {
     setFormState(prevState => ({
       ...prevState,
-      members: members.filter((_, i) => i !== index),
+      familyMembers: familyMembers.filter((_, i) => i !== index),
     }));
   };
 
-  const handleMemberInputChange = (index: number, field: keyof FamilyMember, value: string) => {
-    const updatedMembers = [...members];
+  const handleMemberInputChange = (index: number, field: keyof Member, value: string) => {
+    const updatedMembers = [...familyMembers];
     updatedMembers[index] = { ...updatedMembers[index], [field]: value };
     setFormState(prevState => ({
       ...prevState,
-      members: updatedMembers,
+      familyMembers: updatedMembers,
     }));
   };
 
-  // Função para exportar para excel
   const exportToExcel = () => {
-    const ws = XLSX.utils.json_to_sheet(members);
+    const ws = XLSX.utils.json_to_sheet(familyMembers);
     const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, `Cadastro - ${address}`);
-    XLSX.writeFile(wb, `Cadastro - ${address}.xlsx`);
+    XLSX.utils.book_append_sheet(wb, ws, 'Cadastro - Familia');
+    XLSX.writeFile(wb, 'Cadastro_Familia.xlsx');
   };
 
   const printForm = () => {
-    document.title = `Cadastro - ${address}`;
+    document.title = `Cadastro - Família`;
     window.print();
   };
 
-  const data = {
-    homeAddress: address,
-    homePhone: phone,
-    residentsQuantity: residents,
-    propertyType,
-    animalQuantity,
-    animalType,
-    members,
-    roomsQuantity: rooms,
-  };
+  const data = formState
+  console.log(data)
 
-  // Definindo campos dinamicamente
   const formFields = [
     {
       label: 'Endereço',
-      name: 'address',
+      name: 'homeAddress',
       type: 'text',
-      value: address,
+      value: homeAddress,
       handleChange: handleInputChange,
       placeholder: "Rua qualquer, n77..."
     },
@@ -112,31 +108,31 @@ export const ControllerForm = () => {
     },
     {
       label: 'Qt. de moradores',
-      name: 'residents',
+      name: 'residentsQuantity',
       type: 'number',
-      value: residents,
+      value: extraData.residentsQuantity,
       handleChange: handleInputChange,
     },
     {
       label: 'Qt. de cômodos',
-      name: 'rooms',
+      name: 'roomsQuantity',
       type: 'number',
-      value: rooms,
+      value: extraData.roomsQuantity,
       handleChange: handleInputChange,
     },
     {
       label: 'Tipo de imóvel',
       name: 'propertyType',
       type: 'select',
-      value: propertyType,
+      value: extraData.propertyType,
       options: dataItems.propertyTypes,
       handleChange: handleInputChange,
     },
     {
       label: 'Animais?',
-      name: 'animalType',
+      name: 'animalTypes',
       type: 'text',
-      value: animalType,
+      value: extraData.animalTypes,
       handleChange: handleInputChange,
       placeholder: "Cachorro, Gato"
     },
@@ -144,7 +140,7 @@ export const ControllerForm = () => {
       label: 'Quantos?',
       name: 'animalQuantity',
       type: 'number',
-      value: animalQuantity,
+      value: extraData.animalQuantity,
       handleChange: handleInputChange,
     },
   ];
@@ -158,8 +154,7 @@ export const ControllerForm = () => {
     handleInputChange,
     exportToExcel,
     printForm,
-    data,
     formFields,
-    members
+    familyMembers
   };
 };
