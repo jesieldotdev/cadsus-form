@@ -1,14 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MapPin, Phone, User } from 'lucide-react';
-import { DomicileItem, Member } from '../../types'; // Importe seus tipos de DomicileItem e Member
-import { mockDomicileItem } from '../../store/domicile/utils'; // Dados fictícios
+import { DomicileItem, Member } from '../../types'; 
+import { mockDomicileItem } from '../../store/domicile/utils'; 
+import useStore from '../../hooks/useStore';
 
 const DomicileDetail: React.FC = () => {
-  const { domicileId } = useParams<{ domicileId: string }>(); // Pegando o id do domicílio da URL
+  const [, actions, select] = useStore();
+
+  const {
+      domicile: {
+          getDomicileById
+      }
+  } = actions
+
+
+  const { domicileId } = useParams<{ domicileId: string }>(); 
   const navigate = useNavigate();
-  // Encontrar o domicílio pelo ID
-  const domicile = mockDomicileItem.find(item => item.id === domicileId);
+
+
+  
+  
+  const domicile = domicileId ? getDomicileById(domicileId) : null 
 
   if (!domicile) {
     return <div>O domicílio não foi encontrado.</div>;
@@ -68,7 +81,7 @@ const DomicileDetail: React.FC = () => {
                 <span className="text-lg font-medium text-gray-700">{member.name}</span>
               </div>
               <button
-                onClick={() => navigate(`/member/${member.sus}`)} // Navega para a página do membro
+                onClick={() => navigate(`/member/${member.sus}`)} 
                 className="text-indigo-600 hover:text-indigo-800"
               >
                 Ver Detalhes

@@ -4,6 +4,10 @@ export const initialDomicileState = (): DomicileState=>(
       individualModalTable: false,
       selectedItemIndex: -1,
       searchText: '',
+      filter:{
+        member: undefined,
+        domicile:undefined
+      }
       // filter: {
       //   domicile: {
       //     filter: {

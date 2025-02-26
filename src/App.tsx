@@ -11,7 +11,7 @@ const App = () => {
 
   const {
       domicile: {
-          getDomiciles
+          // getDomiciles
       }
   } = actions
 

@@ -1,6 +1,6 @@
 
 import { setDomicile as setDomicileDomicile } from "./reducer";
-    import { mockDomicileItem } from './utils'
+import { mockDomicileItem } from './utils'
 
 
 interface Response {
@@ -36,56 +36,69 @@ export const setDomicileItem =
     };
 
 
-    
-    
-    export const getDomiciles =
-      (getState: () => RootState, actions: ActionsType) =>
-      () => {
-        
-        const domiciles = mockDomicileItem;
-    
-        
-        actions.domicile.setDomicile("items", domiciles); 
-        return domiciles;
-      };
-    
 
-      export const getDomicileById =
-      (getState: () => RootState, actions: ActionsType) =>
-      (id: string) => {
-        
-        const state = getState();
-        const domicile = state.domicile.items.find(item => item.id === id);
-    
-        if (domicile) {
-          console.log('Domicílio encontrado:', domicile);
-          return domicile; 
-        } else {
-          console.log('Domicílio não encontrado.');
-          return null;
-        }
-      };
-    
 
-      export const getMemberById =
+export const getDomiciles =
   (getState: () => RootState, actions: ActionsType) =>
-  (domicileId: string, memberId: string) => {
-    
-    const state = getState();
-    const domicile = state.domicile.items.find(item => item.id === domicileId);
+    () => {
 
-    if (domicile) {
-      
-      const member = domicile.familyMembers.find(member => member.sus === memberId);
-      if (member) {
-        console.log('Membro encontrado:', member);
-        return member; 
+      const domiciles = mockDomicileItem;
+
+
+      actions.domicile.setDomicile("items", domiciles);
+      return domiciles;
+    };
+
+
+export const getDomicileById =
+  (getState: () => RootState, actions: ActionsType) =>
+    (id: string) => {
+
+      const state = getState();
+      const domicile = state.domicile.items.find(item => item.id === id);
+
+      if (domicile) {
+        console.log('Domicílio encontrado:', domicile);
+        return domicile;
       } else {
-        console.log('Membro não encontrado.');
+        console.log('Domicílio não encontrado.');
         return null;
       }
-    } else {
-      console.log('Domicílio não encontrado.');
-      return null;
+    };
+
+export const getMemberBySUS =
+  (getState: () => RootState) =>
+    (sus: string) => {
+      const state = getState();
+
+      
+      for (let domicile of state.domicile.items) {
+        const member = domicile.familyMembers.find(member => member.sus === sus);
+        if (member) {
+          console.log('Membro encontrado:', member);
+          return member; 
+        }
+      }
+
+      console.log('Membro não encontrado.');
+      return null; 
+    };
+
+
+    export const getDomicileBySUS =
+  (getState: () => RootState, actions: ActionsType) =>
+  (sus: string): DomicileItem | null => {
+    const state = getState(); 
+
+    
+    for (let domicile of state.domicile.items) {
+      const member = domicile.familyMembers.find(member => member.sus === sus);
+      if (member) {
+        console.log('Domicílio encontrado para o SUS:', domicile);
+        return domicile; 
+      }
     }
+
+    console.log('Domicílio não encontrado para o SUS.');
+    return null; 
   };

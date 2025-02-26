@@ -1,26 +1,33 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Member } from '../../types'; // Importe seus tipos de Member
-import { mockDomicileItem } from '../../store/domicile/utils'; // Dados fictícios
+import useStore from '../../hooks/useStore';
+
 
 const MemberDetail: React.FC = () => {
-  const { sus } = useParams<{ sus: string }>(); // Pegando o SUS do membro da URL
+    const [, actions, select] = useStore();
+
+  const {
+    domicile: {
+      getMemberBySUS,
+      getDomicileBySUS
+    }
+  } = actions
+
+
+  const { sus } = useParams<{ sus: string }>();
   const navigate = useNavigate();
 
   const handleBack = () => {
-    navigate(-1); // Volta para a página anterior
+    navigate(-1);
   };
 
-  // Encontrar o membro pelo SUS
-  const member = mockDomicileItem
-    .flatMap(domicilio => domicilio.familyMembers)
-    .find(member => member.sus === sus);
 
-  const domicile = mockDomicileItem
-  .filter(domicilio => domicilio.familyMembers)
-  .find(member => member);
 
-  console.log(domicile )
+  const member = sus ? getMemberBySUS(sus) : null 
+
+  const domicile = sus ? getDomicileBySUS(sus) : null
+
+  console.log(domicile)
 
   if (!member) {
     return <div>Membro não encontrado.</div>;
@@ -29,7 +36,7 @@ const MemberDetail: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
 
-            {/* Breadcrumb com o botão de voltar */}
+      {/* Breadcrumb com o botão de voltar */}
       <div className="flex items-center space-x-2 mb-6">
         <button
           onClick={handleBack}

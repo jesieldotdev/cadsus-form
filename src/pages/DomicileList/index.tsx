@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, User } from 'lucide-react';
-import { useNavigate } from 'react-router-dom'; // Importando useNavigate
+import { useNavigate } from 'react-router-dom'; 
 import useStore from '../../hooks/useStore';
 
 interface Domicile {
   homeAddress: string | undefined;
   phone: string | undefined;
   residentsQuantity: number | undefined;
-  id: string; // Adicionando um ID único para cada domicílio
+  id: string; 
 }
 
 
 
 const DomicileList: React.FC = () => {
-  const navigate = useNavigate(); // Usando o useNavigate
+  const navigate = useNavigate(); 
 
     const [, actions, select] = useStore();
 
@@ -23,20 +23,21 @@ const domiciles = select('domicile.items')
   homeAddress: item.homeAddress,
   phone: item.phone,
   residentsQuantity: item.extraData.residentsQuantity,
-  id: item.id, // Adicionando um ID único de cada domicílio
+  id: item.id, 
 }));
-    // const {
-    //     domicile: {
-    //         getDomiciles
-    //     }
-    // } = actions
+    const {
+        domicile: {
+            getDomicileById
+        }
+    } = actions
   
 
   const [searchQuery, setSearchQuery] = useState<string>('');
   
   const handleBack = () => {
-    navigate(-1); // Volta para a página anterior
+    navigate(-1); 
   };
+
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -49,7 +50,7 @@ const domiciles = select('domicile.items')
   );
 
   const handleDomicileClick = (domicileId: string) => {
-    // Navega para a página de detalhes do domicílio com o ID
+    
     navigate(`/domicile/${domicileId}`);
   };
 
@@ -85,7 +86,7 @@ const domiciles = select('domicile.items')
           filteredDomicileList.map((domicilio, index) => (
             <div
               key={index}
-              onClick={() => handleDomicileClick(domicilio.id)} // Função onClick para redirecionar
+              onClick={() => handleDomicileClick(domicilio.id)} 
               className="bg-white p-4 rounded-lg shadow-md flex flex-col space-y-2 cursor-pointer hover:bg-gray-100"
             >
               <div className="flex items-center space-x-3">

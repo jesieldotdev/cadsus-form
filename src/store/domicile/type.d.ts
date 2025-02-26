@@ -3,6 +3,10 @@ type DomicileState = {
   selectedItemIndex: number;
   searchText: string;
   individualModalTable: boolean;
+  filter: {
+    member : Member | undefined
+    domicile: DomicileItem | undefined
+  }
 };
 
 type DomicileItem = {

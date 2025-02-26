@@ -123,7 +123,7 @@ export const mockDomicileItem: DomicileItem[] = [
     ]
   },
   {
-    "id": "0",
+    "id": "1",
     "homeAddress": "Av. Central, 456",
     "phone": "8765-4321",
     "extraData": {
@@ -183,7 +183,7 @@ export const mockDomicileItem: DomicileItem[] = [
     ]
   },
   {
-    "id": "0",
+    "id": "2",
     "homeAddress": "Rua do Sol, 789",
     "phone": "7654-3210",
     "extraData": {
