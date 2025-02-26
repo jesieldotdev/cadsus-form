@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
-import {FamilyMemberForm} from './components/FamilyMemberForm';
+import { FamilyMemberForm } from './components/FamilyMemberForm';
 import { UserProfiles } from '../Print';
 import { ControllerForm } from './viewController';
+import { BreadCrumb } from '../../components/BreadCrumb';
 
 interface FamilyMember {
   tipo: string;
@@ -19,7 +20,7 @@ interface FamilyMember {
 }
 
 const Form: React.FC = () => {
-  const  {
+  const {
     dataItems,
     members,
     address,
@@ -46,6 +47,8 @@ const Form: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+      <BreadCrumb actualPageTitle='Novo Cadastro' />
+
       <h1 className="text-2xl font-bold text-indigo-700 mb-6">Formulário de Cadastro da Família</h1>
       <div className="space-y-6">
 

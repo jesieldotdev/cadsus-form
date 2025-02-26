@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../../hooks/useStore';
+import { BreadCrumb } from '../../components/BreadCrumb';
 
 
 const MemberDetail: React.FC = () => {
@@ -36,17 +37,9 @@ const MemberDetail: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
 
-      {/* Breadcrumb com o botão de voltar */}
-      <div className="flex items-center space-x-2 mb-6">
-        <button
-          onClick={handleBack}
-          className="text-indigo-600 hover:text-indigo-800 flex items-center space-x-2"
-        >
-          <span className="font-semibold">Voltar</span>
-        </button>
-        <span>/</span>
-        <span className="font-medium text-gray-600">{domicile?.homeAddress} /{member.name}</span>
-      </div>
+      <BreadCrumb actualPageTitle={`${domicile?.homeAddress} /${member.name}`} />
+
+
       <h1 className="text-2xl font-bold text-center text-indigo-700 mb-6">Detalhes do Membro</h1>
 
       {/* Informações do Membro */}
