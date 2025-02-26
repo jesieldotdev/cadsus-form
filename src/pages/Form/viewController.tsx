@@ -95,6 +95,62 @@ export const ControllerForm = () => {
     roomsQuantity: rooms,
   };
 
+  const formFields = [
+    {
+      label: 'Endereço',
+      name: 'address',
+      type: 'text',
+      value: address,
+      handleChange: handleAddressChange,
+      placeholder: "Rua qualquer, n77..."
+    },
+    {
+      label: 'Tel. Contato',
+      name: 'phone',
+      type: 'tel',
+      value: phone,
+      handleChange: handlePhoneChange,
+      placeholder: "99 99999-9999"
+    },
+    {
+      label: 'Qt. de moradores',
+      name: 'residents',
+      type: 'number',
+      value: residents,
+      handleChange: handleResidentsChange,
+    },
+    {
+      label: 'Qt. de cômodos',
+      name: 'rooms',
+      type: 'number',
+      value: rooms,
+      handleChange: handleRoomsChange,
+    },
+    {
+      label: 'Tipo de imóvel',
+      name: 'propertyType',
+      type: 'select',
+      value: propertyType,
+      options: dataItems.propertyTypes,
+      handleChange: handlePropertyTypeChange,
+    },
+    {
+      label: 'Animais?',
+      name: 'animalType',
+      type: 'text',
+      value: animalType,
+      handleChange: handleAnimalTypeChange,
+      placeholder: "Cachorro, Gato"
+    },
+    {
+      label: 'Quantos?',
+      name: 'animalQuantity',
+      type: 'number',
+      value: animalQuantity,
+      handleChange: handleAnimalQuantityChange,
+    }
+  ];
+
   return {
     dataItems,
     members,
@@ -117,6 +173,7 @@ export const ControllerForm = () => {
     handleAnimalQuantityChange,
     exportToExcel,
     printForm,
-    data
+    data,
+    formFields
   };
 };

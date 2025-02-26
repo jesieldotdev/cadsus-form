@@ -1,6 +1,7 @@
 import React from 'react';
 import NaturalidadeInput from './Naturality';
 import { ControllerMemberForm } from './viewController';
+import { Trash } from 'lucide-react';
 
 interface FamilyMemberFormProps {
   index: number;
@@ -15,8 +16,6 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
     formFields
   } = ControllerMemberForm({ handleInputChange, memberData, index, removeMember });
 
-  // Definir campos dinamicamente
-
 
   return (
     <div className="space-y-4 p-4 border rounded-md shadow-md mb-4 text-sm bg-gray-50">
@@ -26,7 +25,7 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
           onClick={() => removeMember(index)}
           className="text-red-500 hover:text-red-700 text-sm"
         >
-          Remover
+          <Trash height={20}/>
         </button>
       </div>
 
