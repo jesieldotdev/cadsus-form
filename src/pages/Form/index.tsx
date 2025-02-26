@@ -21,7 +21,6 @@ interface FamilyMember {
 
 const Form: React.FC = () => {
   const {
-    dataItems,
     members,
  
     addMember,

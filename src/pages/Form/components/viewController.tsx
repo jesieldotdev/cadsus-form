@@ -1,3 +1,5 @@
+import dataItems from './data'
+
 interface ControllerFormProps{
     index: number;
     removeMember: (index: number) => void;
@@ -26,30 +28,7 @@ export const ControllerMemberForm = ({handleInputChange,index,memberData,removeM
         handleInputChange(index, 'nascimento', value);
       };
     
-      const memberTypes = [
-        'Responsável', 'Irmão/irmã', 'Pai', 'Mãe', 'Filho(a)', 'Genro/Nora', 'Cônjuge', 'Neto(a)/Bisneto(a)', 'Sogro(a)', 'Enteado(a)', 'Outro'
-      ];
-    
-      const scolarity = [
-        "ALFABETIZAÇÃO PARA ADULTOS (MOBRAL, ETC)",
-        "CLASSE DE ALFABETIZAÇÃO - CA",
-        "CRECHE",
-        "ENSINO FUNDAMENTAL COMPLETO",
-        "ENSINO FUNDAMENTAL EJA - SÉRIES FINAIS (SUPLETIVO 5ª a 9ª)",
-        "ENSINO FUNDAMENTAL EJA - SÉRIES INICIAIS (SUPLETIVO 1ª a 4ª)",
-        "ENSINO FUNDAMENTAL ESPECIAL",
-        "ENSINO FUNDAMENTAL 1ª a 4ª SÉRIES",
-        "ENSINO FUNDAMENTAL 5ª a 9ª SÉRIES",
-        "ENSINO MÉDIO EJA (SUPLETIVO)",
-        "ENSINO MÉDIO ESPECIAL",
-        "ENSINO MÉDIO, MÉDIO 2º CICLO (CIENTÍFICO, TÉCNICO E ETC)",
-        "FUNDAMENTAL 1A A 4A COMPLETO",
-        "NENHUM",
-        "PRÉ-ESCOLA (EXCETO CA)",
-        "SUPERIOR, APERFEIÇOAMENTO, ESPECIALIZAÇÃO, MESTRADO, DOUTORADO"
-      ];
-    
-      const skinTones = ["Branco", "Preto", "Pardo", "Amarelo", "Indigena"];
+ 
 
       const formFields = [
         {
@@ -57,7 +36,7 @@ export const ControllerMemberForm = ({handleInputChange,index,memberData,removeM
           name: 'tipo',
           type: 'select',
           value: memberData.tipo,
-          options: memberTypes,
+          options: dataItems.memberTypes,
           handleChange,
         },
         {
@@ -107,7 +86,7 @@ export const ControllerMemberForm = ({handleInputChange,index,memberData,removeM
           name: 'escolaridade',
           type: 'select',
           value: memberData.escolaridade,
-          options: scolarity,
+          options: dataItems.scolarity,
           handleChange,
         },
         {
@@ -115,7 +94,7 @@ export const ControllerMemberForm = ({handleInputChange,index,memberData,removeM
           name: 'cor',
           type: 'select',
           value: memberData.cor,
-          options: skinTones,
+          options: dataItems.skinTones,
           handleChange,
         },
         {
@@ -128,14 +107,7 @@ export const ControllerMemberForm = ({handleInputChange,index,memberData,removeM
       ];
 
     return {
-        scolarity,
-        memberTypes,
-        handleDateBirthChange,
-        handleSUSChange,
         handleChange,
-        skinTones,
-        memberData,
-        removeMember,
         formFields
     }
 }
