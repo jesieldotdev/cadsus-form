@@ -4,7 +4,7 @@ interface ControllerFormProps{
     index: number;
     removeMember: (index: number) => void;
     handleInputChange: (index: number, field: string, value: string) => void;
-    memberData: any;
+    memberData: Member;
 }
 
 export const ControllerMemberForm = ({handleInputChange,index,memberData,removeMember}:ControllerFormProps) => {
@@ -33,17 +33,17 @@ export const ControllerMemberForm = ({handleInputChange,index,memberData,removeM
       const formFields = [
         {
           label: 'Tipo de Membro',
-          name: 'tipo',
+          name: 'type',
           type: 'select',
-          value: memberData.tipo,
+          value: memberData.type,
           options: dataItems.memberTypes,
           handleChange,
         },
         {
           label: 'Nome',
-          name: 'nome',
+          name: 'name',
           type: 'text',
-          value: memberData.nome,
+          value: memberData.name,
           handleChange,
         },
         {
@@ -55,53 +55,53 @@ export const ControllerMemberForm = ({handleInputChange,index,memberData,removeM
         },
         {
           label: 'Mãe',
-          name: 'mae',
+          name: 'mother',
           type: 'text',
-          value: memberData.mae,
+          value: memberData.mother,
           handleChange,
         },
         {
           label: 'Pai',
-          name: 'pai',
+          name: 'father',
           type: 'text',
-          value: memberData.pai,
+          value: memberData.father,
           handleChange,
         },
         {
           label: 'Nascimento',
-          name: 'nascimento',
+          name: 'dateOfBirth',
           type: 'date',
-          value: memberData.nascimento,
+          value: memberData.dateOfBirth,
           handleChange: handleDateBirthChange,
         },
         {
           label: 'Ocupação',
-          name: 'ocupacao',
+          name: 'occupation',
           type: 'text',
-          value: memberData.ocupacao,
+          value: memberData.occupation,
           handleChange,
         },
         {
           label: 'Escolaridade',
-          name: 'escolaridade',
+          name: 'degreeOfStudy',
           type: 'select',
-          value: memberData.escolaridade,
+          value: memberData.degreeOfStudy,
           options: dataItems.scolarity,
           handleChange,
         },
         {
           label: 'Cor',
-          name: 'cor',
+          name: 'skinTone',
           type: 'select',
-          value: memberData.cor,
+          value: memberData.skinTone,
           options: dataItems.skinTones,
           handleChange,
         },
         {
           label: 'Observação',
-          name: 'observacao',
+          name: 'observation',
           type: 'textarea',
-          value: memberData.observacao,
+          value: memberData.observation,
           handleChange,
         },
       ];

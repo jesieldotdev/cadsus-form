@@ -28,11 +28,11 @@ export const setDomicileItem =
       } = actions;
       const state = getState();
 
-      const selectedCartItemIndex = state.domicile.selectedItemIndex;
-      const selectedItem = state.domicile.items[selectedCartItemIndex];
+      const selectedDomicileItemIndex = state.domicile.selectedItemIndex;
+      const selectedItem = state.domicile.items[selectedDomicileItemIndex];
       if (!selectedItem) return;
 
-      setDomicile(`items.${selectedCartItemIndex}.${field}`, value as any);
+      setDomicile(`items.${selectedDomicileItemIndex}.${field}`, value as any);
     };
 
 

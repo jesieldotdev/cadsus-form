@@ -1,6 +1,9 @@
+import { getDefaultDomicileItem } from "./utils";
+
 export const initialDomicileState = (): DomicileState=>(
     {
       items: [],
+      formState: getDefaultDomicileItem(),
       individualModalTable: false,
       selectedItemIndex: -1,
       searchText: '',

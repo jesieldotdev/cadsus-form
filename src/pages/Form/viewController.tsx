@@ -1,65 +1,52 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as XLSX from 'xlsx';
 import dataItems from './data';
-
-// interface FamilyMember {
-//   tipo: string;
-//   nome: string;
-//   sus: string;
-//   mae: string;
-//   pai: string;
-//   naturalidade: string;
-//   ocupacao: string;
-//   escolaridade: string;
-//   observacao: string;
-//   cor: string;
-//   nascimento: Date | '';
-// }
+import useStore from '../../hooks/useStore';
+import debounce from 'lodash/debounce'; // Importa debounce do lodash
 
 export const ControllerForm = () => {
-  const [formState, setFormState] = useState<DomicileItem>({
-    familyMembers: [],
-    id: '',
-    homeAddress: '',
-    phone: '',
-    extraData: {
-      accessToResidenceType: undefined,
-      animalQuantity: 0,
-      animalTypes: undefined,
-      electricityAvailability: false,
-      hasLivedSince: undefined,
-      predominantConstructionMaterial: undefined,
-      propertyType: undefined,
-      residenceType: undefined,
-      residentsQuantity: undefined,
-      roomsQuantity: 0,
-      waterSupply: undefined,
-      waterTreatment: undefined
-    }
-  });
+  const [, actions, select] = useStore();
+  const { domicile: { setDomicile } } = actions;
 
-  const { familyMembers, extraData, homeAddress, phone } = formState;
+  const formState = select('domicile.formState');
+  
+  const [localState, setLocalState] = useState<DomicileItem>(formState);
+
+  // Debounced function to sync local state with global state
+  const debouncedSetDomicile = debounce((updatedState: DomicileItem) => {
+    setDomicile('formState', updatedState);
+  }, 4000); // O delay é de 500ms, ajustável conforme necessário.
+
+  // UseEffect to update global state with debounce
+  useEffect(() => {
+    debouncedSetDomicile(localState); // Só chama quando o debounce finaliza
+    return () => {
+      debouncedSetDomicile.cancel(); // Cancela o debounce quando o componente é desmontado
+    };
+  }, [localState]); // Sempre que localState mudar, a função debounced é chamada
+
+  const { familyMembers, extraData, homeAddress, phone } = localState;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormState(prevState => ({
+    setLocalState(prevState => ({
       ...prevState,
-      [name]: value,
+      [name]: value
     }));
   };
 
   const addMember = () => {
-    setFormState(prevState => ({
+    setLocalState(prevState => ({
       ...prevState,
       familyMembers: [
         ...familyMembers,
-        { type: '', name: '', sus: '', mother: '', father: '', naturality: '', occupation: '', degreeOfStudy: '', observation: '', naturalFrom: '', skinTone: '', dateOfBirth: '', healthInfo: undefined }
+        { type: '', name: '', sus: '', mother: '', father: '', naturalFrom: '', occupation: '', degreeOfStudy: '', observation: '', skinTone: '', dateOfBirth: '', healthInfo: undefined }
       ]
     }));
   };
 
   const removeMember = (index: number) => {
-    setFormState(prevState => ({
+    setLocalState(prevState => ({
       ...prevState,
       familyMembers: familyMembers.filter((_, i) => i !== index),
     }));
@@ -68,7 +55,7 @@ export const ControllerForm = () => {
   const handleMemberInputChange = (index: number, field: keyof Member, value: string) => {
     const updatedMembers = [...familyMembers];
     updatedMembers[index] = { ...updatedMembers[index], [field]: value };
-    setFormState(prevState => ({
+    setLocalState(prevState => ({
       ...prevState,
       familyMembers: updatedMembers,
     }));
@@ -86,8 +73,6 @@ export const ControllerForm = () => {
     window.print();
   };
 
-  const data = formState
-  console.log(data)
 
   const formFields = [
     {
@@ -147,7 +132,7 @@ export const ControllerForm = () => {
 
   return {
     dataItems,
-    formState,
+    formState: localState, // Retorna o estado local
     addMember,
     removeMember,
     handleMemberInputChange,

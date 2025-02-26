@@ -10,6 +10,8 @@ export function UserProfiles({
 }: UserProfiles) {
   const printRef = useRef(null);
 
+  console.log(formState.familyMembers)
+
   const handlePrint = () => {
     html2pdf()
       .from(printRef.current)
@@ -132,7 +134,7 @@ export function UserProfiles({
             {member.observation && <p><strong>Observação: </strong>{member.observation}</p>}
 
             {/* Health Information */}
-            {member.healthInfo && (
+            {/* {member.healthInfo && (
               <div className="mt-4">
                 <h4><strong>Informações de Saúde</strong></h4>
                 {member.healthInfo.isPregnant !== undefined && (
@@ -208,7 +210,7 @@ export function UserProfiles({
                   </p>
                 )}
               </div>
-            )}
+            )} */}
           </div>
         ))}
       </div>

@@ -1,5 +1,6 @@
 type DomicileState = {
   items: DomicileItem[];
+  formState: DomicileItem
   selectedItemIndex: number;
   searchText: string;
   individualModalTable: boolean;

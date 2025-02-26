@@ -28,7 +28,8 @@ const moduleFields: Record<ModuleTypes, FlattenKeys<RootState>[]> = {
     "domicile.selectedItemIndex",
     "domicile.individualModalTable",
     "domicile.searchText",
-    "domicile.filter"
+    "domicile.filter",
+    "domicile.formState"
   ],
 };
 
