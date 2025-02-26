@@ -23,23 +23,11 @@ const Form: React.FC = () => {
   const {
     dataItems,
     members,
-    address,
-    phone,
-    residents,
-    propertyType,
-    animalType,
-    animalQuantity,
-    rooms,
+ 
     addMember,
     removeMember,
     handleMemberInputChange,
-    handleAddressChange,
-    handlePhoneChange,
-    handleResidentsChange,
-    handleRoomsChange,
-    handlePropertyTypeChange,
-    handleAnimalTypeChange,
-    handleAnimalQuantityChange,
+    
     exportToExcel,
     printForm,
     data,
@@ -86,7 +74,7 @@ const Form: React.FC = () => {
         ))}
 
         {/* Adicionar Membro */}
-        {members.map((member, index) => (
+        {!!members && members.map((member, index) => (
           <FamilyMemberForm
             key={index}
             index={index}
