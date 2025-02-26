@@ -51,6 +51,82 @@ export const ControllerMemberForm = ({handleInputChange,index,memberData,removeM
     
       const skinTones = ["Branco", "Preto", "Pardo", "Amarelo", "Indigena"];
 
+      const formFields = [
+        {
+          label: 'Tipo de Membro',
+          name: 'tipo',
+          type: 'select',
+          value: memberData.tipo,
+          options: memberTypes,
+          handleChange,
+        },
+        {
+          label: 'Nome',
+          name: 'nome',
+          type: 'text',
+          value: memberData.nome,
+          handleChange,
+        },
+        {
+          label: 'SUS',
+          name: 'sus',
+          type: 'text',
+          value: memberData.sus,
+          handleChange: handleSUSChange,
+        },
+        {
+          label: 'Mãe',
+          name: 'mae',
+          type: 'text',
+          value: memberData.mae,
+          handleChange,
+        },
+        {
+          label: 'Pai',
+          name: 'pai',
+          type: 'text',
+          value: memberData.pai,
+          handleChange,
+        },
+        {
+          label: 'Nascimento',
+          name: 'nascimento',
+          type: 'date',
+          value: memberData.nascimento,
+          handleChange: handleDateBirthChange,
+        },
+        {
+          label: 'Ocupação',
+          name: 'ocupacao',
+          type: 'text',
+          value: memberData.ocupacao,
+          handleChange,
+        },
+        {
+          label: 'Escolaridade',
+          name: 'escolaridade',
+          type: 'select',
+          value: memberData.escolaridade,
+          options: scolarity,
+          handleChange,
+        },
+        {
+          label: 'Cor',
+          name: 'cor',
+          type: 'select',
+          value: memberData.cor,
+          options: skinTones,
+          handleChange,
+        },
+        {
+          label: 'Observação',
+          name: 'observacao',
+          type: 'textarea',
+          value: memberData.observacao,
+          handleChange,
+        },
+      ];
+
     return {
         scolarity,
         memberTypes,
@@ -59,6 +135,7 @@ export const ControllerMemberForm = ({handleInputChange,index,memberData,removeM
         handleChange,
         skinTones,
         memberData,
-        removeMember
+        removeMember,
+        formFields
     }
 }

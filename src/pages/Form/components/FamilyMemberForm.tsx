@@ -10,14 +10,13 @@ interface FamilyMemberFormProps {
 }
 
 const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember, handleInputChange, memberData }) => {
- const {
-  scolarity,
-  memberTypes,
-  handleDateBirthChange,
-  handleSUSChange,
-  handleChange,
-  skinTones,
-} = ControllerMemberForm({handleInputChange,memberData, index,removeMember})
+  const {
+    handleChange,
+    formFields
+  } = ControllerMemberForm({ handleInputChange, memberData, index, removeMember });
+
+  // Definir campos dinamicamente
+
 
   return (
     <div className="space-y-4 p-4 border rounded-md shadow-md mb-4 text-sm bg-gray-50">
@@ -30,142 +29,47 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
           Remover
         </button>
       </div>
-      
-      {/* Tipo de Membro */}
-      <div>
-        <label className="block text-gray-700">Tipo de Membro</label>
-        <select
-          name="tipo"
-          value={memberData.tipo}
-          onChange={handleChange}
-          className="mt-1 block w-full px-4 py-2 border rounded-md text-gray-900 text-sm"
-        >
-          {memberTypes.map((member, idx) => (
-            <option key={idx} value={member}>{member}</option>
-          ))}
-        </select>
-      </div>
 
-      {/* Nome e SUS */}
-      <div className="flex flex-col sm:flex-row sm:space-x-4">
-        <div className="w-full sm:w-1/2">
-          <label className="block text-gray-700">Nome</label>
-          <input
-            placeholder='João Niguém'
-            type="text"
-            name="nome"
-            value={memberData.nome}
-            onChange={handleChange}
-            className="mt-1 block w-full px-4 py-2 border rounded-md text-sm text-gray-900"
-          />
+      {/* Renderizando os campos dinamicamente */}
+      {formFields.map((field, idx) => (
+        <div key={idx}>
+          <label className="block text-gray-700">{field.label}</label>
+          {field.type === 'select' ? (
+            <select
+              name={field.name}
+              value={field.value}
+              onChange={field.handleChange}
+              className="mt-1 block w-full px-4 py-2 border rounded-md text-gray-900 text-sm"
+            >
+              {field.options?.map((option, optionIdx) => (
+                <option key={optionIdx} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          ) : field.type === 'textarea' ? (
+            <textarea
+              name={field.name}
+              value={field.value}
+              onChange={field.handleChange}
+              className="mt-1 block w-full px-4 py-2 border rounded-md text-gray-900 text-sm"
+            ></textarea>
+          ) : (
+            <input
+              type={field.type}
+              name={field.name}
+              value={field.value}
+              onChange={field.handleChange}
+              className="mt-1 block w-full px-4 py-2 border rounded-md text-gray-900 text-sm"
+            />
+          )}
         </div>
-        <div className="w-full sm:w-1/2">
-          <label className="block text-gray-700">SUS</label>
-          <input
-            type="text"
-            placeholder='000.0000.0000.0000'
-            name="sus"
-            value={memberData.sus}
-            onChange={handleSUSChange}
-            maxLength={19} 
-            className="mt-1 block w-full px-4 py-2 border rounded-md text-gray-900 text-sm"
-          />
-        </div>
-      </div>
-
-      {/* Mãe e Pai */}
-      <div className="flex flex-col sm:flex-row sm:space-x-4">
-        <div className="w-full sm:w-1/2">
-          <label className="block text-gray-700">Mãe</label>
-          <input
-            type="text"
-            name="mae"
-            value={memberData.mae}
-            onChange={handleChange}
-            className="mt-1 block w-full px-4 py-2 border rounded-md text-gray-900 text-sm"
-          />
-        </div>
-        <div className="w-full sm:w-1/2">
-          <label className="block text-gray-700">Pai</label>
-          <input
-            type="text"
-            name="pai"
-            value={memberData.pai}
-            onChange={handleChange}
-            className="mt-1 block w-full px-4 py-2 border rounded-md text-gray-900 text-sm"
-          />
-        </div>
-      </div>
-
-      {/* Nascimento e Ocupação */}
-      <div className="flex flex-col sm:flex-row sm:space-x-4">
-        <div className="w-full sm:w-1/2">
-          <label className="block text-gray-700">Nascimento</label>
-          <input
-            type="date"
-            name="nascimento"
-            value={memberData.nascimento}
-            onChange={handleDateBirthChange}
-            className="mt-1 block w-full px-4 py-2 border rounded-md text-gray-900 text-sm"
-          />
-        </div>
-        <div className="w-full sm:w-1/2">
-          <label className="block text-gray-700">Ocupação</label>
-          <input
-            type="text"
-            name="ocupacao"
-            value={memberData.ocupacao}
-            onChange={handleChange}
-            className="mt-1 block w-full px-4 py-2 border rounded-md text-gray-900 text-sm"
-          />
-        </div>
-      </div>
-
-      {/* Escolaridade */}
-      <div className="w-full sm:w-1/3">
-        <label className="block text-gray-700">Escolaridade</label>
-        <select
-          name="escolaridade"
-          value={memberData.escolaridade}
-          onChange={handleChange}
-          className="mt-1 block w-full px-4 py-2 border rounded-md text-gray-900 text-sm"
-        >
-          {scolarity.map((level, idx) => (
-            <option key={idx} value={level}>{level}</option>
-          ))}
-        </select>
-      </div>
+      ))}
 
       {/* Naturalidade */}
       <NaturalidadeInput handleChange={handleChange} memberData={memberData} />
-
-      {/* Cor */}
-      <div className="w-full sm:w-2/4">
-        <label className="block text-gray-700">Cor</label>
-        <select
-          name="cor"
-          value={memberData.cor}
-          onChange={handleChange}
-          className="mt-1 block w-full px-4 py-2 border rounded-md text-gray-900 text-sm"
-        >
-          {skinTones.map((tone, idx) => (
-            <option key={idx} value={tone}>{tone}</option>
-          ))}
-        </select>
-      </div>
-
-      {/* Observação */}
-      <div>
-        <label className="block text-gray-700">Observação</label>
-        <textarea
-          name="observacao"
-          value={memberData.observacao}
-          onChange={handleChange}
-          className="mt-1 block w-full px-4 py-2 border rounded-md text-gray-900 text-sm"
-        ></textarea>
-      </div>
     </div>
   );
 };
 
-export { FamilyMemberForm }
+export { FamilyMemberForm };
