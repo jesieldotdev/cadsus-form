@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MapPin, Phone, User } from 'lucide-react';
-import { mockDomicileItem } from '../../store/domicile/utils';
 import { useNavigate } from 'react-router-dom'; // Importando useNavigate
+import useStore from '../../hooks/useStore';
 
 interface Domicile {
   homeAddress: string | undefined;
@@ -10,15 +10,27 @@ interface Domicile {
   id: string; // Adicionando um ID único para cada domicílio
 }
 
-const DomicileListData: Domicile[] = mockDomicileItem.map(item => ({
+
+
+const DomicileList: React.FC = () => {
+  const navigate = useNavigate(); // Usando o useNavigate
+
+    const [, actions, select] = useStore();
+
+const domiciles = select('domicile.items')
+
+  const DomicileListData: Domicile[] = domiciles.map(item => ({
   homeAddress: item.homeAddress,
   phone: item.phone,
   residentsQuantity: item.extraData.residentsQuantity,
   id: item.id, // Adicionando um ID único de cada domicílio
 }));
-
-const DomicileList: React.FC = () => {
-  const navigate = useNavigate(); // Usando o useNavigate
+    // const {
+    //     domicile: {
+    //         getDomiciles
+    //     }
+    // } = actions
+  
 
   const [searchQuery, setSearchQuery] = useState<string>('');
   

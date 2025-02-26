@@ -17,7 +17,10 @@ const MemberDetail: React.FC = () => {
     .find(member => member.sus === sus);
 
   const domicile = mockDomicileItem
-    .find(dom => dom.homeAddress);
+  .filter(domicilio => domicilio.familyMembers)
+  .find(member => member);
+
+  console.log(domicile )
 
   if (!member) {
     return <div>Membro não encontrado.</div>;

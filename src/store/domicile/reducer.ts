@@ -6,7 +6,7 @@ import { setNestedField } from "../../utils/utils";
 export const setDomicileAction = createAction<{
   field: FlattenKeys<DomicileState>;
   value: any;
-}>("SET_TASK")
+}>("SET_DOMICILE")
 
 export const setDomicile =
   <T extends FlattenKeys<DomicileState>>(field: T, value: DeepType<DomicileState, T>) =>
