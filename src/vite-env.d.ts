@@ -4,13 +4,7 @@ declare module 'html-to-pdf-js' {
     export function htmlToPdf(): any;
   }
   
-  type Member = {
-    tipo: string | undefined;
-    nome: string | undefined;
-    sus: string | undefined;
-    mae: string | undefined;
-    pai: string | undefined;
-  };
+
   
   type Data = {
     homeAddress: string | undefined;
