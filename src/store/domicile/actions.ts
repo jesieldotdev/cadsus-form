@@ -69,31 +69,48 @@ export const getMemberBySUS =
     (sus: string) => {
       const state = getState();
 
-      
+
       for (let domicile of state.domicile.items) {
         const member = domicile.familyMembers.find(member => member.sus === sus);
         if (member) {
-          return member; 
+          return member;
         }
       }
 
-      return null; 
+      return null;
     };
 
 
-    export const getDomicileBySUS =
+export const getDomicileBySUS =
   (getState: () => RootState, actions: ActionsType) =>
-  (sus: string): DomicileItem | null => {
-    const state = getState(); 
+    (sus: string): DomicileItem | null => {
+      const state = getState();
 
-    
-    for (let domicile of state.domicile.items) {
-      const member = domicile.familyMembers.find(member => member.sus === sus);
-      if (member) {
-        return domicile; 
+
+      for (let domicile of state.domicile.items) {
+        const member = domicile.familyMembers.find(member => member.sus === sus);
+        if (member) {
+          return domicile;
+        }
       }
-    }
 
-    console.log('Domicílio não encontrado para o SUS.');
-    return null; 
-  };
+      console.log('Domicílio não encontrado para o SUS.');
+      return null;
+    };
+
+
+export const addDomicileItem =
+  (getState: () => RootState, actions: ActionsType) =>
+    (newDomicile: DomicileItem): void => {
+      const state = getState();
+
+      const exists = state.domicile.items.some(item => item.id === newDomicile.id);
+      if (exists) {
+        console.warn("Domicile já existe na lista.");
+        return;
+      }
+
+      const updatedDomiciles = [...state.domicile.items, newDomicile];
+      actions.domicile.setDomicile("items", updatedDomiciles);
+    };
+

@@ -8,7 +8,7 @@ import _ from "lodash";
 
 export const ControllerForm = () => {
   const [, actions, select] = useStore();
-  const { domicile: { setDomicile } } = actions;
+  const { domicile: { setDomicile, addDomicileItem } } = actions;
 
   // Dividindo o estado
   const formState = select('domicile.formState');
@@ -48,6 +48,7 @@ export const ControllerForm = () => {
       setDomicile('healthForm', localHealthState);
     }
   }, [localHealthState, healthState]);
+
 
   // Manipuladores de entrada
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -190,7 +191,8 @@ export const ControllerForm = () => {
     printForm,
     formFields,
     extraDataFields,
-    familyMembersState: localFormState.familyMembers, // Usar localFormState.familyMembers
+    familyMembersState: localFormState.familyMembers,
+    addDomicileItem
   };
 };
 
