@@ -2,6 +2,7 @@ import React from 'react';
 import NaturalidadeInput from './Naturality';
 import { ControllerMemberForm } from './viewController';
 import { Trash } from 'lucide-react';
+import _ from 'lodash';
 
 interface FamilyMemberFormProps {
   index: number;
@@ -20,9 +21,18 @@ const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember
     formFields
   } = ControllerMemberForm({ handleInputChange, memberData, index, removeMember });
 
+  const debouncedHandleInputChange = _.debounce((index: number, field: string, value: string) => {
+    handleInputChange(index, field, value);
+  }, 1500); // Ajuste o tempo de debounce conforme necessário (500ms é um exemplo)
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    handleInputChange(index, e.target.name, e.target.value);
+    const { name, value } = e.target;
+    console.log(`Campo alterado: ${name} - Novo Valor: ${value}`);
+  
+    // Mantém a estrutura correta dos objetos aninhados
+    debouncedHandleInputChange(index, name, value);
   };
+  
 
   return (
     <div className="space-y-4 p-4 border rounded-md shadow-md mb-4 text-sm bg-gray-50">

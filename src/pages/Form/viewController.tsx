@@ -13,6 +13,240 @@ export const ControllerForm = () => {
   const [, actions, select] = useStore();
   const { domicile: { setDomicile, addDomicileItem } } = actions;
 
+  function addData(){
+    const d: DomicileItem = {
+      "id": "1369d6f2-9c80-4139-9bea-880952e6eb17",
+      "homeAddress": "Rua Exemplo, 123",
+      "phone": "0000000000",
+      "extraData": {
+          "waterSupply": "Rede pública",
+          "waterTreatment": "Filtragem",
+          "animalTypes": "Cães e gatos",
+          "hasLivedSince": "2015-06-10",
+          "residenceType": "Apartamento",
+          "accessToResidenceType": "Asfalto",
+          "predominantConstructionMaterial": "Concreto",
+          "electricityAvailability": true,
+          "residentsQuantity": 4,
+          "propertyType": "Próprio",
+          "animalQuantity": "2",
+          "roomsQuantity": "5"
+      },
+      "familyMembers": [
+          {
+              "id": "49f51a6e-3312-43a9-99b4-68feafd5bc16",
+              "name": "NAIARA ALMEIDA DA SILVA",
+              "type": "CÔNJUGE",
+              "sus": "NAIARA ALMEIDA DA SILVA",
+              "dateOfBirth": "",
+              "skinTone": "",
+              "father": "",
+              "mother": "F",
+              "degreeOfStudy": "",
+              "occupation": "",
+              "healthInfo": {
+                  "isPregnant": "NÃO",
+                  "referenceMaternity": "",
+                  "healthStatus": "",
+                  "usesOtherDrugs": false,
+                  "hasHypertension": false,
+                  "hasDiabetes": false,
+                  "hadStroke": false,
+                  "hadHeartAttack": false,
+                  "hasHeartDisease": false,
+                  "heartDiseaseType": "",
+                  "hasRespiratoryDisease": false,
+                  "respiratoryDiseaseType": "",
+                  "isSmoker": false,
+                  "usesAlcohol": false,
+                  "hasKidneyProblems": false,
+                  "kidneyProblemType": "",
+                  "hasLeprosy": false,
+                  "hasCancer": false,
+                  "hasTuberculosis": false,
+                  "hadHospitalizationInLast12Months": false,
+                  "hospitalizationCause": "",
+                  "hadMentalHealthDiagnosis": false,
+                  "isBedridden": false,
+                  "usesMedicinalPlants": false,
+                  "medicinalPlants": "",
+                  "usesOtherIntegrativePractices": false,
+                  "isDomiciled": false,
+                  "otherHealthConditions": []
+              },
+              "naturalFrom": "",
+              "observation": ""
+          },
+          {
+              "id": "2290db74-dc64-450a-ad7a-05a2d46fdd85",
+              "name": "LIZ MACEDO DA SILVA",
+              "type": "FILHO(A)",
+              "sus": "LIZ MACEDO DA SILVA",
+              "dateOfBirth": "",
+              "skinTone": "",
+              "father": "",
+              "mother": "F",
+              "degreeOfStudy": "",
+              "occupation": "",
+              "healthInfo": {
+                  "isPregnant": "NÃO",
+                  "referenceMaternity": "",
+                  "healthStatus": "",
+                  "usesOtherDrugs": false,
+                  "hasHypertension": false,
+                  "hasDiabetes": false,
+                  "hadStroke": false,
+                  "hadHeartAttack": false,
+                  "hasHeartDisease": false,
+                  "heartDiseaseType": "",
+                  "hasRespiratoryDisease": false,
+                  "respiratoryDiseaseType": "",
+                  "isSmoker": false,
+                  "usesAlcohol": false,
+                  "hasKidneyProblems": false,
+                  "kidneyProblemType": "",
+                  "hasLeprosy": false,
+                  "hasCancer": false,
+                  "hasTuberculosis": false,
+                  "hadHospitalizationInLast12Months": false,
+                  "hospitalizationCause": "",
+                  "hadMentalHealthDiagnosis": false,
+                  "isBedridden": false,
+                  "usesMedicinalPlants": false,
+                  "medicinalPlants": "",
+                  "usesOtherIntegrativePractices": false,
+                  "isDomiciled": false,
+                  "otherHealthConditions": []
+              },
+              "naturalFrom": "",
+              "observation": ""
+          },
+          {
+              "id": "ee6bfe5f-f231-43c0-abbf-f29bb2dea985",
+              "name": "MANUELA MACEDO DA SILVA",
+              "type": "FILHO(A)",
+              "sus": "MANUELA MACEDO DA SILVA",
+              "dateOfBirth": "",
+              "skinTone": "",
+              "father": "",
+              "mother": "F",
+              "degreeOfStudy": "",
+              "occupation": "",
+              "healthInfo": {
+                  "isPregnant": "NÃO",
+                  "referenceMaternity": "",
+                  "healthStatus": "",
+                  "usesOtherDrugs": false,
+                  "hasHypertension": false,
+                  "hasDiabetes": false,
+                  "hadStroke": false,
+                  "hadHeartAttack": false,
+                  "hasHeartDisease": false,
+                  "heartDiseaseType": "",
+                  "hasRespiratoryDisease": false,
+                  "respiratoryDiseaseType": "",
+                  "isSmoker": false,
+                  "usesAlcohol": false,
+                  "hasKidneyProblems": false,
+                  "kidneyProblemType": "",
+                  "hasLeprosy": false,
+                  "hasCancer": false,
+                  "hasTuberculosis": false,
+                  "hadHospitalizationInLast12Months": false,
+                  "hospitalizationCause": "",
+                  "hadMentalHealthDiagnosis": false,
+                  "isBedridden": false,
+                  "usesMedicinalPlants": false,
+                  "medicinalPlants": "",
+                  "usesOtherIntegrativePractices": false,
+                  "isDomiciled": false,
+                  "otherHealthConditions": []
+              },
+              "naturalFrom": "",
+              "observation": ""
+          },
+          {
+              "id": "65b7f1b0-46a7-4c6c-aef3-725499efbc00",
+              "name": "ELDED MACEDO SILVA",
+              "type": "RESPONSÁVEL",
+              "sus": "ELDED MACEDO SILVA",
+              "dateOfBirth": "244093",
+              "skinTone": "",
+              "father": "",
+              "mother": "M",
+              "degreeOfStudy": "",
+              "occupation": "",
+              "healthInfo": {
+                  "isPregnant": "SIM",
+                  "referenceMaternity": "",
+                  "healthStatus": "",
+                  "usesOtherDrugs": false,
+                  "hasHypertension": false,
+                  "hasDiabetes": false,
+                  "hadStroke": false,
+                  "hadHeartAttack": false,
+                  "hasHeartDisease": false,
+                  "heartDiseaseType": "",
+                  "hasRespiratoryDisease": false,
+                  "respiratoryDiseaseType": "",
+                  "isSmoker": false,
+                  "usesAlcohol": false,
+                  "hasKidneyProblems": false,
+                  "kidneyProblemType": "",
+                  "hasLeprosy": false,
+                  "hasCancer": false,
+                  "hasTuberculosis": false,
+                  "hadHospitalizationInLast12Months": false,
+                  "hospitalizationCause": "",
+                  "hadMentalHealthDiagnosis": false,
+                  "isBedridden": false,
+                  "usesMedicinalPlants": false,
+                  "medicinalPlants": "",
+                  "usesOtherIntegrativePractices": false,
+                  "isDomiciled": false,
+                  "otherHealthConditions": []
+              },
+              "naturalFrom": "",
+              "observation": ""
+          }
+      ],
+      "healthForm": {
+          "isPregnant": false,
+          "referenceMaternity": "",
+          "healthStatus": "",
+          "usesOtherDrugs": false,
+          "hasHypertension": false,
+          "hasDiabetes": false,
+          "hadStroke": false,
+          "hadHeartAttack": false,
+          "hasHeartDisease": false,
+          "heartDiseaseType": "",
+          "hasRespiratoryDisease": false,
+          "respiratoryDiseaseType": "",
+          "isSmoker": false,
+          "usesAlcohol": false,
+          "hasKidneyProblems": false,
+          "kidneyProblemType": "",
+          "hasLeprosy": false,
+          "hasCancer": false,
+          "hasTuberculosis": false,
+          "hadHospitalizationInLast12Months": false,
+          "hospitalizationCause": "",
+          "hadMentalHealthDiagnosis": false,
+          "isBedridden": false,
+          "usesMedicinalPlants": false,
+          "medicinalPlants": "",
+          "usesOtherIntegrativePractices": false,
+          "isDomiciled": false,
+          "otherHealthConditions": []
+      }
+  }
+  
+    addDomicileItem(d)
+  }
+
+  addData()
+
   // Dividindo o estado
   const formState = select('domicile.formState');
   const extraDataState = select('domicile.extraData');
@@ -60,6 +294,7 @@ export const ControllerForm = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    console.log(name, value)
 
     setLocalFormState(prevState => {
       const updatedState = { ...prevState };
@@ -116,18 +351,39 @@ export const ControllerForm = () => {
   };
 
   const handleMemberInputChange = (index: number, field: string, value: string) => {
-    setLocalFormState(prevState => {
-      const updatedMembers = prevState.familyMembers.map((member, i) =>
-        i === index ? { ...member, [field]: value } : member
-      );
-
+    console.log(`Atualizando ${field}:`, value, "no membro de índice", index);
+  
+    setLocalFormState((prevState) => {
+      const updatedMembers = prevState.familyMembers.map((member, i) => {
+        if (i === index) {
+          // Se for um campo de healthInfo, atualiza corretamente
+          if (field.startsWith("healthInfo.")) {
+            return {
+              ...member,
+              healthInfo: {
+                ...member.healthInfo,
+                [field.replace("healthInfo.", "")]: value,
+              },
+            };
+          } 
+          // Se for um campo normal, atualiza diretamente
+          else {
+            return {
+              ...member,
+              [field]: value,
+            };
+          }
+        }
+        return member;
+      });
+  
       return {
         ...prevState,
-        familyMembers: updatedMembers
+        familyMembers: updatedMembers,
       };
     });
   };
-
+  
 
 
   const exportToExcel = () => {

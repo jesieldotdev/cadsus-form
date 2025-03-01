@@ -4,6 +4,7 @@ import DomicileList from "../pages/DomicileList";
 import DomicileDetail from "../pages/DomicileDetail";
 import MemberDetail from "../pages/MemberDetail";
 import Form from "../pages/Form";
+import SettingsPage from "../pages/SettingsPage";
 
 export const routes: RouteObject[] = [
   {
@@ -28,6 +29,10 @@ export const routes: RouteObject[] = [
       {
         path: "/new",
         element: <Form   />,
+      },
+      {
+        path: "/settings",
+        element: <SettingsPage   />,
       },
   
     ],

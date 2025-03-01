@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { List, ClipboardCheck, Home } from "lucide-react";
+import { List, ClipboardCheck, Home, Settings } from "lucide-react";
 
 const HomeDash: React.FC = () => {
   return (
@@ -11,6 +11,7 @@ const HomeDash: React.FC = () => {
           <MenuItem route="/new" icon={<Home />} label="Novo Domicílio" />
           <MenuItem route="/list" icon={<List />} label="Lista de Domicílios" />
           <MenuItem route="#registraAtividade" icon={<ClipboardCheck />} label="Registra Atividade" />
+          <MenuItem route="/settings" icon={<Settings />} label="Configurações" />
         </div>
       </div>
     </div>

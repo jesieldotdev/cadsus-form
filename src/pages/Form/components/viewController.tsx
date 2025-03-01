@@ -145,9 +145,9 @@ export const ControllerMemberForm = ({
     },
     {
       label: 'Observação',
-      name: 'observation',
+      name: 'healthInfo.otherHealthConditions',
       type: 'textarea',
-      value: memberData.observation,
+      value: memberData.healthInfo.otherHealthConditions,
       handleChange,
     },
   ];
