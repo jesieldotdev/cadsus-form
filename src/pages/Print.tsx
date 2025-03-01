@@ -19,10 +19,10 @@ const pdfConfig = {
   tableRowBg: "#f8f9fa",
   alignTitle: "center" as const,
   marginX: 10,
-  marginY: 10,
+  marginY: 8,
 };
 
-export function UserProfiles({ formState }: UserProfilesProps) {
+export function PrintPDF({ formState }: UserProfilesProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const printRef = useRef<HTMLDivElement>(null);
@@ -125,11 +125,11 @@ export function UserProfiles({ formState }: UserProfilesProps) {
   };
 
   return (
-    <div className="flex flex-col justify-center bg-white p-6">
+    <>
       {/* Botão para gerar PDF */}
       <button
         onClick={generatePDF}
-        className="mt-6 px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 transition duration-300 w-full md:w-auto"
+        className="px-3 py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 transition duration-300 "
       >
         {loading ? <LoaderPinwheel className="animate-spin" /> : "Gerar PDF"}
       </button>
@@ -156,6 +156,6 @@ export function UserProfiles({ formState }: UserProfilesProps) {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

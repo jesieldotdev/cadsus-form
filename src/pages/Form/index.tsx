@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { LoaderPinwheel, ChevronLeft, ChevronRight } from "lucide-react";
 import { FamilyMemberForm } from "./components/FamilyMemberForm";
-import { UserProfiles } from "../Print";
+import { PrintPDF } from "../Print";
 import { ControllerForm } from "./viewController";
 import { BreadCrumb } from "../../components/BreadCrumb";
 
@@ -165,7 +165,7 @@ const Form: React.FC = () => {
 
       {/* Botões de exportação ou impressão */}
       <div className="mt-6 flex flex-wrap gap-4 justify-center sm:justify-start">
-        <button
+        {/* <button
           onClick={exportToExcel}
           className={`px-6 py-3 ${
             familyMembersState.length === 0 ? "bg-gray-500" : "bg-green-500"
@@ -173,7 +173,7 @@ const Form: React.FC = () => {
           disabled={familyMembersState.length === 0}
         >
           Exportar para Excel
-        </button>
+        </button> */}
         <button
           onClick={() => handleSave()}
           className={`px-6 py-3 ${
@@ -183,18 +183,18 @@ const Form: React.FC = () => {
         >
           {loading ? <LoaderPinwheel className="animate-spin" /> : "Salvar"}
         </button>
-        <button
+        {/* <button
           onClick={printForm}
           className="px-6 py-3 bg-gray-500 text-white rounded-md hover:bg-gray-600"
         >
           Imprimir
-        </button>
+        </button> */}
+
+        {formState && formState.homeAddress && <PrintPDF formState={formState} />}
+
       </div>
 
 
-          {/* UserProfiles Component */}
-          <p className="p-2 m-4 font-semibold">Pré visualização</p>
-          {formState && formState.homeAddress && <UserProfiles formState={formState} />}
     </div>
   );
 };

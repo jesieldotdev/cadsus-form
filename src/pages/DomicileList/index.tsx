@@ -3,6 +3,7 @@ import { MapPin, Phone, User, Table, List, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import useStore from "../../hooks/useStore";
 import DynamicTable from "../../components/DynamicTable";
+import { PrintPDF } from "../Print";
 
 interface Actions {
   id: string
@@ -11,7 +12,7 @@ interface Actions {
 const DomicileList: React.FC = () => {
   const navigate = useNavigate();
   const [, actions, select] = useStore();
-  const { domicile: { deleteDomicileById } } = actions;
+  const { domicile: { deleteDomicileById, getDomicileById } } = actions;
 
   const domiciles = select("domicile.items");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -68,22 +69,10 @@ const DomicileList: React.FC = () => {
           <Trash2 size={18} />
           <span>Excluir</span>
         </button>
+
+        {getDomicileById(id) ? <PrintPDF formState={getDomicileById(id)}  /> : null}
       </div>
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+  
     )
   }
 
