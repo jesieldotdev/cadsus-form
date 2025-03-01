@@ -1,71 +1,119 @@
-import React, { useState } from 'react';
-import { MapPin, Phone, User } from 'lucide-react';
-import { useNavigate } from 'react-router-dom'; 
-import useStore from '../../hooks/useStore';
+import React, { useState } from "react";
+import { MapPin, Phone, User, Table, List, Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import useStore from "../../hooks/useStore";
+import DynamicTable from "../../components/DynamicTable";
 
-interface Domicile {
-  homeAddress: string | undefined;
-  phone: string | undefined;
-  residentsQuantity: number | undefined;
-  id: string; 
+interface Actions {
+  id: string
 }
 
-
-
 const DomicileList: React.FC = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const [, actions, select] = useStore();
+  const { domicile: { deleteDomicileById } } = actions;
 
-    const [, actions, select] = useStore();
-
-const domiciles = select('domicile.items')
-
-  const DomicileListData: Domicile[] = domiciles.map(item => ({
-  homeAddress: item.homeAddress,
-  phone: item.phone,
-  residentsQuantity: item.extraData.residentsQuantity,
-  id: item.id, 
-}));
-    const {
-        domicile: {
-            getDomicileById
-        }
-    } = actions
-  
-
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  
-  const handleBack = () => {
-    navigate(-1); 
-  };
-
+  const domiciles = select("domicile.items");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [viewMode, setViewMode] = useState<"cards" | "table">("cards");
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
-  const filteredDomicileList = DomicileListData.filter(domicilio =>
-    domicilio.homeAddress?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    domicilio.phone?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    domicilio.residentsQuantity?.toString().includes(searchQuery)
-  );
-
   const handleDomicileClick = (domicileId: string) => {
-    
     navigate(`/domicile/${domicileId}`);
   };
 
+  // Função para excluir um domicílio
+  const handleDelete = (domicileId: string) => {
+    if (window.confirm("Tem certeza que deseja excluir este domicílio?")) {
+      console.log(domicileId);
+    }
+  };
+
+  const DomicileListData = domiciles.map((item) => ({
+    id: item.id,
+    Endereço: item.homeAddress,
+    Telefone: item.phone,
+    Moradores: item.extraData.residentsQuantity,
+  }));
+
+  const filteredDomicileList = DomicileListData.filter((domicilio) =>
+    Object.values(domicilio)
+      .join(" ")
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
+  );
+
+  const ActionButtons = ({id}: Actions) => {
+    return (
+      <div className="flex justify-between items-center mt-3">
+      <button
+        onClick={() => handleDomicileClick(id)}
+        className="text-indigo-600 hover:text-indigo-800"
+      >
+        Ver Detalhes
+      </button>
+      <button
+        onClick={() => handleDelete(id)}
+        className="text-red-600 hover:text-red-800 flex items-center space-x-1"
+      >
+        <Trash2 size={18} />
+        <span>Excluir</span>
+      </button>
+    </div>
+    //   <div className="flex gap-3">
+    //   <button
+    //     onClick={() => handleDelete(id)}
+    //     className="text-red-600 hover:text-red-800 flex items-center space-x-1"
+    //   >
+    //     <Trash2 size={18} />
+    //     <span>Excluir</span>
+    //   </button>
+    //   <button
+    //     onClick={() => handleDomicileClick(id)}
+    //     className=" text-indigo-600 hover:text-indigo-800 flex items-center space-x-1"
+    //   >
+    //     <span>Ver detalhes</span>
+    //   </button>
+    // </div>
+    )
+  }
+  
+
   return (
     <div className="min-h-screen bg-gray-50 p-4">
-      {/* Breadcrumb com o botão de voltar */}
-      <div className="flex items-center space-x-2 mb-6">
-        <button
-          onClick={handleBack}
-          className="text-indigo-600 hover:text-indigo-800 flex items-center space-x-2"
-        >
-          <span className="font-semibold">Inicio</span>
-        </button>
-        <span>/</span>
-        <span className="font-medium text-gray-600">Lista de Domicílios</span>
+      {/* Breadcrumb e botões de alternância */}
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => navigate(-1)}
+            className="text-indigo-600 hover:text-indigo-800 flex items-center space-x-2"
+          >
+            <span className="font-semibold">Início</span>
+          </button>
+          <span>/</span>
+          <span className="font-medium text-gray-600">Lista de Domicílios</span>
+        </div>
+
+        {/* Alternador de visualização */}
+        <div className="flex space-x-2">
+          <button
+            onClick={() => setViewMode("cards")}
+            className={`p-2 rounded-lg transition ${viewMode === "cards" ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-600"
+              }`}
+          >
+            <List size={20} />
+          </button>
+          <button
+            onClick={() => setViewMode("table")}
+            className={`p-2 rounded-lg transition ${viewMode === "table" ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-600"
+              }`}
+          >
+            <Table size={20} />
+          </button>
+        </div>
       </div>
 
       <h1 className="text-2xl font-bold text-center text-indigo-700 mb-6">Lista de Domicílios</h1>
@@ -76,37 +124,52 @@ const domiciles = select('domicile.items')
           type="text"
           value={searchQuery}
           onChange={handleSearchChange}
-          placeholder="Pesquisar por endereço, telefone ou moradores..."
+          placeholder="Pesquisar..."
           className="w-full max-w-md px-4 py-2 text-sm text-gray-700 bg-white rounded-lg shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
         />
       </div>
 
-      <div className="space-y-4">
-        {filteredDomicileList.length > 0 ? (
-          filteredDomicileList.map((domicilio, index) => (
-            <div
-              key={index}
-              onClick={() => handleDomicileClick(domicilio.id)} 
-              className="bg-white p-4 rounded-lg shadow-md flex flex-col space-y-2 cursor-pointer hover:bg-gray-100"
-            >
-              <div className="flex items-center space-x-3">
-                <MapPin className="text-indigo-600" size={20} />
-                <span className="text-lg font-medium text-gray-700">{domicilio.homeAddress}</span>
+      {/* Renderiza a visualização escolhida */}
+      {filteredDomicileList.length > 0 ? (
+        viewMode === "cards" ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredDomicileList.map((domicilio) => (
+              <div
+                key={domicilio.id}
+                className="bg-white p-4 rounded-lg shadow-md flex flex-col space-y-2"
+              >
+                {Object.entries(domicilio).map(
+                  ([key, value]) =>
+                    key !== "id" && (
+                      <div key={key} className="flex items-center space-x-3">
+                        {key === "Endereço" && <MapPin className="text-indigo-600" size={20} />}
+                        {key === "Telefone" && <Phone className="text-green-600" size={20} />}
+                        {key === "Moradores" && <User className="text-blue-600" size={20} />}
+                        <span className="text-sm text-gray-600">
+                          <strong>{key}:</strong> {value}
+                        </span>
+                      </div>
+                    )
+                )}
+
+                <ActionButtons id={domicilio.id}/>
               </div>
-              <div className="flex items-center space-x-3">
-                <Phone className="text-green-600" size={20} />
-                <span className="text-sm text-gray-600">{domicilio.phone}</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <User className="text-blue-600" size={20} />
-                <span className="text-sm text-gray-600">{domicilio.residentsQuantity} moradores</span>
-              </div>
-            </div>
-          ))
+            ))}
+          </div>
         ) : (
-          <div className="text-center text-gray-600">Nenhum domicílio encontrado.</div>
-        )}
-      </div>
+          <DynamicTable
+            data={filteredDomicileList.map((domicilio) => ({
+              ...domicilio,
+              Ações: (
+              <ActionButtons id={domicilio.id}/>
+              ),
+            }))}
+            onRowClick={handleDomicileClick}
+          />
+        )
+      ) : (
+        <div className="text-center text-gray-600">Nenhum domicílio encontrado.</div>
+      )}
     </div>
   );
 };

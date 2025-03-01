@@ -27,7 +27,7 @@ export const ControllerForm = () => {
   // Debounce para salvar o estado
   const debouncedSetDomicile = _.debounce((updatedState) => {
     setDomicile('formState', updatedState);
-  }, 4000);
+  }, 1000);
 
   // Efeito para sincronizar formState
   useEffect(() => {
@@ -101,9 +101,10 @@ export const ControllerForm = () => {
   const addMember = () => {
     setLocalFormState(prevState => ({
       ...prevState,
-      familyMembers: prevState.familyMembers.length === 0
-        ? [defaultMemberInfo] // Se a lista estiver vazia, adiciona o membro padrão
-        : [...prevState.familyMembers, defaultMemberInfo] // Caso contrário, adiciona ao final
+      familyMembers: [
+        ...prevState.familyMembers,
+        { ...defaultMemberInfo, id: uuidv4() } // Gera um ID único para o novo membro
+      ]
     }));
   };
 
@@ -143,14 +144,20 @@ export const ControllerForm = () => {
 
 
   function handleSave() {
-    setLoading(true)
-    setDomicile('formState.id', uuidv4());
-    addDomicileItem(formState)
-    setLoading(false)
-
-    enqueueSnackbar('Salvo!')
-
+    setLoading(true);
+  
+    // Gera um ID único e atualiza o estado local primeiro
+    const updatedFormState = { ...localFormState, id: uuidv4() };
+    console.log(updatedFormState)
+    setLocalFormState(updatedFormState)
+  
+    setDomicile("formState", updatedFormState);
+    addDomicileItem(updatedFormState);
+  
+    setLoading(false);
+    enqueueSnackbar("Salvo com sucesso!", { variant: "success" });
   }
+  
 
   // Formulários dinâmicos
   const formFields = [

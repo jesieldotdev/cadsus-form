@@ -80,6 +80,22 @@ export const getMemberBySUS =
       return null;
     };
 
+export const getMemberByID =
+  (getState: () => RootState) =>
+    (id: string) => {
+      const state = getState();
+
+
+      for (let domicile of state.domicile.items) {
+        const member = domicile.familyMembers.find(member => member.id === id);
+        if (member) {
+          return member;
+        }
+      }
+
+      return null;
+    };
+
 
 export const getDomicileBySUS =
   (getState: () => RootState, actions: ActionsType) =>
@@ -95,6 +111,23 @@ export const getDomicileBySUS =
       }
 
       console.log('Domicílio não encontrado para o SUS.');
+      return null;
+    };
+
+export const getDomicileByMemberId =
+  (getState: () => RootState, actions: ActionsType) =>
+    (id: string): DomicileItem | null => {
+      const state = getState();
+
+
+      for (let domicile of state.domicile.items) {
+        const member = domicile.familyMembers.find(member => member.id === id);
+        if (member) {
+          return domicile;
+        }
+      }
+
+      console.log('Domicílio não encontrado para o id.');
       return null;
     };
 

@@ -12,11 +12,11 @@ interface FamilyMemberFormProps {
 
 const FamilyMemberForm: React.FC<FamilyMemberFormProps> = ({ index, removeMember, handleInputChange, memberData }) => {
 
-  console.log('Family Members:', memberData);
+  
   
 
   const {
-    // handleChange,
+    
     formFields
   } = ControllerMemberForm({ handleInputChange, memberData, index, removeMember });
 

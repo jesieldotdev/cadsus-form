@@ -22,6 +22,7 @@ type DomicileItem = {
 };
 
 type Member = {
+  id?: string;
   name: string;
   type: string;
   sus: string;

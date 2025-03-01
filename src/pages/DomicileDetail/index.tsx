@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { MapPin, Phone, User, Trash2 } from "lucide-react"; // Adicionado Trash2 para ícone de lixeira
+import { MapPin, Phone, User, Trash2, Table, List } from "lucide-react";
 import useStore from "../../hooks/useStore";
+import DynamicTable from "../../components/DynamicTable";
 
 const DomicileDetail: React.FC = () => {
   const [, actions, select] = useStore();
@@ -18,13 +19,28 @@ const DomicileDetail: React.FC = () => {
     return <div>O domicílio não foi encontrado.</div>;
   }
 
-  // Função para excluir o domicílio
+  
+  const [viewMode, setViewMode] = useState<"cards" | "table">("table");
+
+  
   const handleDelete = () => {
     if (window.confirm("Tem certeza que deseja excluir este domicílio?")) {
       deleteDomicileById(domicileId);
-      navigate(-1); // Volta para a página anterior após excluir
+      navigate(-1); 
     }
   };
+
+  const handleMemberClick = (memberId: string) => {
+    navigate(`/member/${memberId}`);
+  };
+
+  
+  const familyMembersData = domicile.familyMembers.map((member) => ({
+    CNS: member.sus,
+    Nome: member.name,
+    Idade: member.dateOfBirth,
+    Parentesco: member.type,
+  }));
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -42,7 +58,7 @@ const DomicileDetail: React.FC = () => {
 
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-indigo-700">Detalhes do Domicílio</h1>
-        
+
         {/* Botão de excluir */}
         <button
           onClick={handleDelete}
@@ -80,26 +96,61 @@ const DomicileDetail: React.FC = () => {
 
       {/* Lista de membros */}
       <div className="mt-6">
-        <h2 className="text-xl font-semibold text-indigo-700 mb-4">Membros da Família</h2>
-        <ul className="space-y-4">
-          {domicile.familyMembers.map((member, index) => (
-            <li
-              key={index}
-              className="bg-white p-4 rounded-lg shadow-md flex justify-between items-center"
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-semibold text-indigo-700">Membros da Família</h2>
+          
+          {/* Alternador de visualização */}
+          <div className="flex space-x-2">
+            <button
+              onClick={() => setViewMode("cards")}
+              className={`p-2 rounded-lg transition ${
+                viewMode === "cards" ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-600"
+              }`}
             >
-              <div className="flex items-center space-x-3">
-                <User className="text-blue-600" size={20} />
-                <span className="text-lg font-medium text-gray-700">{member.name}</span>
-              </div>
-              <button
-                onClick={() => navigate(`/member/${member.sus}`)}
-                className="text-indigo-600 hover:text-indigo-800"
-              >
-                Ver Detalhes
-              </button>
-            </li>
-          ))}
-        </ul>
+              <List size={20} />
+            </button>
+            <button
+              onClick={() => setViewMode("table")}
+              className={`p-2 rounded-lg transition ${
+                viewMode === "table" ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-600"
+              }`}
+            >
+              <Table size={20} />
+            </button>
+          </div>
+        </div>
+
+        {/* Exibição dinâmica de membros */}
+        {familyMembersData.length > 0 ? (
+          viewMode === "table" ? (
+            <DynamicTable data={familyMembersData} onRowClick={handleMemberClick} />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {domicile.familyMembers.map((member) => (
+                <div
+                  key={member.sus}
+                  className="bg-white p-4 rounded-lg shadow-md flex flex-col space-y-2"
+                >
+                  <div className="flex items-center space-x-3">
+                    <User className="text-blue-600" size={20} />
+                    <span className="text-lg font-medium text-gray-700">{member.name}</span>
+                  </div>
+                  <p className="text-gray-600"><strong>CNS:</strong> {member.sus}</p>
+                  <p className="text-gray-600"><strong>Idade:</strong> {member.dateOfBirth}</p>
+                  <p className="text-gray-600"><strong>Parentesco:</strong> {member.type}</p>
+                  <button
+                    onClick={() => navigate(`/member/${member.sus}`)}
+                    className="text-indigo-600 hover:text-indigo-800 mt-2"
+                  >
+                    Ver Detalhes
+                  </button>
+                </div>
+              ))}
+            </div>
+          )
+        ) : (
+          <p className="text-gray-600">Nenhum membro cadastrado.</p>
+        )}
       </div>
     </div>
   );

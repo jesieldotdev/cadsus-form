@@ -10,12 +10,14 @@ const MemberDetail: React.FC = () => {
   const {
     domicile: {
       getMemberBySUS,
-      getDomicileBySUS
+      getDomicileBySUS,
+      getMemberByID,
+      getDomicileByMemberId
     }
   } = actions
 
 
-  const { sus } = useParams<{ sus: string }>();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -24,9 +26,9 @@ const MemberDetail: React.FC = () => {
 
 
 
-  const member = sus ? getMemberBySUS(sus) : null 
+  const member = id ? getMemberByID(id) : null 
 
-  const domicile = sus ? getDomicileBySUS(sus) : null
+  const domicile = id ? getDomicileByMemberId(id) : null
 
   
 

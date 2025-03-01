@@ -52,6 +52,7 @@ export const defaultHealthInfo: HealthForm = {
 };
 
 export const defaultMemberInfo: Member = {
+  id:'',
   name: '',
   type: '',
   sus: '',
