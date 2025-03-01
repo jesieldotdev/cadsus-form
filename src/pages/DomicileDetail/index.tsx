@@ -9,6 +9,11 @@ const DomicileDetail: React.FC = () => {
   const { domicileId } = useParams<{ domicileId: string }>();
   const navigate = useNavigate();
 
+  const columnConfig = {
+    'Nome': "250px",
+    'Idade': '150px'
+  };
+
   const {
     domicile: { getDomicileById, deleteDomicileById },
   } = actions;
@@ -123,7 +128,7 @@ const DomicileDetail: React.FC = () => {
         {/* Exibição dinâmica de membros */}
         {familyMembersData.length > 0 ? (
           viewMode === "table" ? (
-            <DynamicTable data={familyMembersData} onRowClick={handleMemberClick} />
+            <DynamicTable data={familyMembersData} columnWidths={columnConfig} />
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {domicile.familyMembers.map((member) => (

@@ -25,7 +25,7 @@ const DomicileList: React.FC = () => {
     navigate(`/domicile/${domicileId}`);
   };
 
-  // Função para excluir um domicílio
+  
   const handleDelete = (domicileId: string) => {
     if (window.confirm("Tem certeza que deseja excluir este domicílio?")) {
       console.log(domicileId);
@@ -46,41 +46,47 @@ const DomicileList: React.FC = () => {
       .includes(searchQuery.toLowerCase())
   );
 
-  const ActionButtons = ({id}: Actions) => {
+  const columnConfig = {
+    Endereço: "300px",
+    Telefone: "150px",
+    Moradores: "100px",
+  };
+
+  const ActionButtons = ({ id }: Actions) => {
     return (
       <div className="flex justify-between items-center mt-3">
-      <button
-        onClick={() => handleDomicileClick(id)}
-        className="text-indigo-600 hover:text-indigo-800"
-      >
-        Ver Detalhes
-      </button>
-      <button
-        onClick={() => handleDelete(id)}
-        className="text-red-600 hover:text-red-800 flex items-center space-x-1"
-      >
-        <Trash2 size={18} />
-        <span>Excluir</span>
-      </button>
-    </div>
-    //   <div className="flex gap-3">
-    //   <button
-    //     onClick={() => handleDelete(id)}
-    //     className="text-red-600 hover:text-red-800 flex items-center space-x-1"
-    //   >
-    //     <Trash2 size={18} />
-    //     <span>Excluir</span>
-    //   </button>
-    //   <button
-    //     onClick={() => handleDomicileClick(id)}
-    //     className=" text-indigo-600 hover:text-indigo-800 flex items-center space-x-1"
-    //   >
-    //     <span>Ver detalhes</span>
-    //   </button>
-    // </div>
+        <button
+          onClick={() => handleDomicileClick(id)}
+          className="text-indigo-600 hover:text-indigo-800"
+        >
+          Ver Detalhes
+        </button>
+        <button
+          onClick={() => handleDelete(id)}
+          className="text-red-600 hover:text-red-800 flex items-center space-x-1"
+        >
+          <Trash2 size={18} />
+          <span>Excluir</span>
+        </button>
+      </div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
     )
   }
-  
+
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -152,19 +158,19 @@ const DomicileList: React.FC = () => {
                     )
                 )}
 
-                <ActionButtons id={domicilio.id}/>
+                <ActionButtons id={domicilio.id} />
               </div>
             ))}
           </div>
         ) : (
           <DynamicTable
+            columnWidths={columnConfig}
             data={filteredDomicileList.map((domicilio) => ({
               ...domicilio,
               Ações: (
-              <ActionButtons id={domicilio.id}/>
+                <ActionButtons id={domicilio.id} />
               ),
             }))}
-            onRowClick={handleDomicileClick}
           />
         )
       ) : (
