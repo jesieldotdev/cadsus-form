@@ -114,3 +114,16 @@ export const addDomicileItem =
       actions.domicile.setDomicile("items", updatedDomiciles);
     };
 
+
+
+export const deleteDomicileById =
+  (getState: () => RootState, actions: ActionsType) =>
+    (id: string): void => {
+      const state = getState();
+
+      
+      const updatedDomiciles = state.domicile.items.filter(item => item.id !== id);
+
+      
+      actions.domicile.setDomicile("items", updatedDomiciles);
+    };
