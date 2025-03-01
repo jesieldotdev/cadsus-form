@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.6.0",
+    "add": "^2.0.6",
     "axios": "^1.7.9",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
@@ -19,12 +20,14 @@
     "jspdf": "^2.5.2",
     "lodash": "^4.17.21",
     "lucide-react": "^0.476.0",
+    "notistack": "^3.0.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.2.0",
     "redux-deep-persist": "^1.0.7",
     "redux-persist": "^6.0.0",
+    "uuid": "^11.1.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

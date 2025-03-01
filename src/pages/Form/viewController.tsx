@@ -4,9 +4,12 @@ import dataItems from './data';
 import useStore from '../../hooks/useStore';
 import { defaultMemberInfo } from '../../store/domicile/utils';
 import _ from "lodash";
+import { v4 as uuidv4 } from 'uuid';
+import { enqueueSnackbar } from 'notistack';
 
 
 export const ControllerForm = () => {
+  const [loading, setLoading] = useState<boolean>(false)
   const [, actions, select] = useStore();
   const { domicile: { setDomicile, addDomicileItem } } = actions;
 
@@ -36,12 +39,13 @@ export const ControllerForm = () => {
     };
   }, [localFormState, formState]);
 
-  // Lógica similar para extraData e healthState
+
   useEffect(() => {
     if (!_.isEqual(localExtraDataState, extraDataState)) {
-      setDomicile('extraData', localExtraDataState);
+      setDomicile('extraData', { ...localExtraDataState }); // Faz uma cópia para evitar referência direta
     }
   }, [localExtraDataState, extraDataState]);
+
 
   useEffect(() => {
     if (!_.isEqual(localHealthState, healthState)) {
@@ -56,32 +60,35 @@ export const ControllerForm = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-  
+
     setLocalFormState(prevState => {
       const updatedState = { ...prevState };
-  
+
       // Se o campo pertence ao objeto healthInfo, armazenamos corretamente
       if (name.startsWith("healthInfo.")) {
         _.set(updatedState, name, value);
       } else {
         updatedState[name] = value;
       }
-  
+
       return updatedState;
     });
   };
-  
-  
-  
+
+
+
 
 
   const handleExtraDataChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+
     setLocalExtraDataState(prevState => ({
-      ...prevState,
-      [name]: value
+      ...prevState, // Cópia do objeto
+      [name]: value // Atualizando o campo diretamente
     }));
   };
+
+
 
   const handleHealthChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -94,7 +101,7 @@ export const ControllerForm = () => {
   const addMember = () => {
     setLocalFormState(prevState => ({
       ...prevState,
-      familyMembers: prevState.familyMembers.length === 0 
+      familyMembers: prevState.familyMembers.length === 0
         ? [defaultMemberInfo] // Se a lista estiver vazia, adiciona o membro padrão
         : [...prevState.familyMembers, defaultMemberInfo] // Caso contrário, adiciona ao final
     }));
@@ -109,18 +116,18 @@ export const ControllerForm = () => {
 
   const handleMemberInputChange = (index: number, field: string, value: string) => {
     setLocalFormState(prevState => {
-      const updatedMembers = [...prevState.familyMembers];
-  
-      // Utilizando lodash para permitir a manipulação de campos aninhados
-      _.set(updatedMembers[index], field, value);
-  
+      const updatedMembers = prevState.familyMembers.map((member, i) =>
+        i === index ? { ...member, [field]: value } : member
+      );
+
       return {
         ...prevState,
         familyMembers: updatedMembers
       };
     });
   };
-  
+
+
 
   const exportToExcel = () => {
     const ws = XLSX.utils.json_to_sheet(localFormState.familyMembers);
@@ -133,6 +140,17 @@ export const ControllerForm = () => {
     document.title = `Cadastro - Família`;
     window.print();
   };
+
+
+  function handleSave() {
+    setLoading(true)
+    setDomicile('formState.id', uuidv4());
+    addDomicileItem(formState)
+    setLoading(false)
+
+    enqueueSnackbar('Salvo!')
+
+  }
 
   // Formulários dinâmicos
   const formFields = [
@@ -199,10 +217,10 @@ export const ControllerForm = () => {
   ];
 
   const extraDataFields = [
-  
- {}
-  
-   
+
+    {}
+
+
   ];
 
   return {
@@ -217,7 +235,9 @@ export const ControllerForm = () => {
     formFields,
     extraDataFields,
     familyMembersState: localFormState.familyMembers,
-    addDomicileItem
+    addDomicileItem,
+    handleSave,
+    loading
   };
 };
 

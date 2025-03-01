@@ -4,6 +4,7 @@ import { FamilyMemberForm } from './components/FamilyMemberForm';
 import { UserProfiles } from '../Print';
 import { ControllerForm } from './viewController';
 import { BreadCrumb } from '../../components/BreadCrumb';
+import { LoaderPinwheel } from 'lucide-react';
 
 const Form: React.FC = () => {
   const {
@@ -15,7 +16,9 @@ const Form: React.FC = () => {
     printForm,
     formFields,
     formState,
-    addDomicileItem
+    addDomicileItem,
+    handleSave,
+    loading
   } = ControllerForm();
 
   console.log(familyMembersState)
@@ -87,11 +90,11 @@ const Form: React.FC = () => {
           Exportar para Excel
         </button>
         <button
-          onClick={() => addDomicileItem(formState)}
+          onClick={() => handleSave()}
           className={`px-6 py-3 ${familyMembersState.length === 0 ? 'bg-gray-500' : 'bg-green-500'} text-white rounded-md hover:bg-green-600`}
           disabled={familyMembersState.length === 0} // Desabilita se não houver membros
         >
-         Salvar
+         {loading ? <LoaderPinwheel className='animate-spin'/> : 'Salvar'}
         </button>
         <button
           onClick={printForm}
