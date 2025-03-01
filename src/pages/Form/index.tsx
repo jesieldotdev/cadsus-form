@@ -21,10 +21,11 @@ const Form: React.FC = () => {
 
   // Estado para controlar o membro atual no stepper
   const [currentStep, setCurrentStep] = useState(0);
+  const [showDomicileForm, setShowDomicileForm] = useState<boolean>(true)
 
   const removeMemberSafe = (index: number) => {
     removeMember(index);
-  
+
     // Ajusta o `currentStep` para evitar índice inválido
     setCurrentStep((prevStep) => {
       return prevStep >= familyMembersState.length - 1
@@ -32,7 +33,7 @@ const Form: React.FC = () => {
         : prevStep;
     });
   };
-  
+
 
   // Funções para navegar no stepper
   const nextStep = () => {
@@ -56,8 +57,14 @@ const Form: React.FC = () => {
       </h1> */}
 
       <div className="space-y-6">
-        {/* Renderizando os campos dinamicamente */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+        <button
+          onClick={()=> setShowDomicileForm(prev => !prev)}
+          className="text-indigo-600 hover:text-indigo-800"
+        >
+          <span>{!showDomicileForm? 'Mostrar' : 'Esconder'}</span>
+        </button>
+     {showDomicileForm ?  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {formFields.map((field, idx) => (
             <div key={field.name || idx}>
               <label className="block text-gray-700">{field.label}</label>
@@ -86,7 +93,7 @@ const Form: React.FC = () => {
               )}
             </div>
           ))}
-        </div>
+        </div> : null}
 
         {/* Stepper para membros da família */}
         {familyMembersState.length > 0 && (
@@ -100,20 +107,18 @@ const Form: React.FC = () => {
               <button
                 onClick={prevStep}
                 disabled={currentStep === 0}
-                className={`px-4 py-2 text-white rounded-md w-full sm:w-auto ${
-                  currentStep === 0 ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-500 hover:bg-indigo-600"
-                }`}
+                className={`px-4 py-2 text-white rounded-md w-full sm:w-auto ${currentStep === 0 ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-500 hover:bg-indigo-600"
+                  }`}
               >
                 <ChevronLeft className="inline-block" /> Anterior
               </button>
               <button
                 onClick={nextStep}
                 disabled={currentStep === familyMembersState.length - 1}
-                className={`px-4 py-2 text-white rounded-md w-full sm:w-auto ${
-                  currentStep === familyMembersState.length - 1
+                className={`px-4 py-2 text-white rounded-md w-full sm:w-auto ${currentStep === familyMembersState.length - 1
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-indigo-500 hover:bg-indigo-600"
-                }`}
+                  }`}
               >
                 Próximo <ChevronRight className="inline-block" />
               </button>
@@ -131,20 +136,18 @@ const Form: React.FC = () => {
               <button
                 onClick={prevStep}
                 disabled={currentStep === 0}
-                className={`px-4 py-2 text-white rounded-md w-full sm:w-auto ${
-                  currentStep === 0 ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-500 hover:bg-indigo-600"
-                }`}
+                className={`px-4 py-2 text-white rounded-md w-full sm:w-auto ${currentStep === 0 ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-500 hover:bg-indigo-600"
+                  }`}
               >
                 <ChevronLeft className="inline-block" /> Anterior
               </button>
               <button
                 onClick={nextStep}
                 disabled={currentStep === familyMembersState.length - 1}
-                className={`px-4 py-2 text-white rounded-md w-full sm:w-auto ${
-                  currentStep === familyMembersState.length - 1
+                className={`px-4 py-2 text-white rounded-md w-full sm:w-auto ${currentStep === familyMembersState.length - 1
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-indigo-500 hover:bg-indigo-600"
-                }`}
+                  }`}
               >
                 Próximo <ChevronRight className="inline-block" />
               </button>
@@ -161,7 +164,7 @@ const Form: React.FC = () => {
         </button>
       </div>
 
-  
+
 
       {/* Botões de exportação ou impressão */}
       <div className="mt-6 flex flex-wrap gap-4 justify-center sm:justify-start">
@@ -176,9 +179,8 @@ const Form: React.FC = () => {
         </button> */}
         <button
           onClick={() => handleSave()}
-          className={`px-6 py-3 ${
-            familyMembersState.length === 0 ? "bg-gray-500" : "bg-green-500"
-          } text-white rounded-md hover:bg-green-600`}
+          className={`px-6 py-3 ${familyMembersState.length === 0 ? "bg-gray-500" : "bg-green-500"
+            } text-white rounded-md hover:bg-green-600`}
           disabled={familyMembersState.length === 0}
         >
           {loading ? <LoaderPinwheel className="animate-spin" /> : "Salvar"}
