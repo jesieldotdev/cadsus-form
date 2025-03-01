@@ -217,6 +217,8 @@ export function UserProfiles({
       <button
         onClick={handlePrint}
         style={{
+          width: '200px',
+          height: '40px',
           marginTop: "20px",
           padding: "8px 16px",
           backgroundColor: "#007bff",
