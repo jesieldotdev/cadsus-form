@@ -7,6 +7,21 @@ interface UserProfilesProps {
   formState: DomicileItem;
 }
 
+// 🎨 Configurações dinâmicas do PDF
+const pdfConfig = {
+  font: "helvetica",
+  titleSize: 14,
+  sectionTitleSize: 12,
+  contentSize: 10,
+  tableHeaderColor: "#ffffff",
+  tableHeaderBg: "#4338ca",
+  tableRowColor: "#000000",
+  tableRowBg: "#f8f9fa",
+  alignTitle: "center" as const,
+  marginX: 10,
+  marginY: 10,
+};
+
 export function UserProfiles({ formState }: UserProfilesProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
@@ -17,17 +32,19 @@ export function UserProfiles({ formState }: UserProfilesProps) {
     const doc = new jsPDF();
 
     // 🎨 Estilizando o título
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(18);
-    doc.text("Ficha Domiciliar", 105, 15, { align: "center" });
+    doc.setFont(pdfConfig.font, "bold");
+    doc.setFontSize(pdfConfig.titleSize);
+    doc.text("Ficha Domiciliar", 105, pdfConfig.marginY, { align: pdfConfig.alignTitle });
 
-    doc.setFontSize(16);
-    doc.text("Dados do Domicílio", 10, 30);
-    doc.setFontSize(12);
+    let currentY = pdfConfig.marginY + 10;
 
     // 🏠 Seção: Dados do Domicílio
+    doc.setFontSize(pdfConfig.sectionTitleSize);
+    doc.text("Dados do Domicílio", pdfConfig.marginX, currentY);
+    doc.setFontSize(pdfConfig.contentSize);
+
     autoTable(doc, {
-      startY: 35,
+      startY: currentY + 5,
       head: [["Campo", "Valor"]],
       body: [
         ["Endereço", formState.homeAddress || "Não informado"],
@@ -44,19 +61,21 @@ export function UserProfiles({ formState }: UserProfilesProps) {
         ["Tipo de animais", formState.extraData.animalTypes || "Não informado"],
       ],
       theme: "grid",
-      styles: { fontSize: 11 },
+      styles: { fontSize: pdfConfig.contentSize },
+      headStyles: { fillColor: pdfConfig.tableHeaderBg, textColor: pdfConfig.tableHeaderColor },
+      alternateRowStyles: { fillColor: pdfConfig.tableRowBg, textColor: pdfConfig.tableRowColor },
     });
 
-    let nextY = (doc as any).lastAutoTable.finalY + 10;
+    currentY = (doc as any).lastAutoTable.finalY + 10;
 
     // 👤 Seção: Moradores
     if (formState.familyMembers.length > 0) {
-      doc.setFontSize(16);
-      doc.text("Moradores", 10, nextY);
-      doc.setFontSize(12);
+      doc.setFontSize(pdfConfig.sectionTitleSize);
+      doc.text("Moradores", pdfConfig.marginX, currentY);
+      doc.setFontSize(pdfConfig.contentSize);
 
       autoTable(doc, {
-        startY: nextY + 5,
+        startY: currentY + 5,
         head: [["Nome", "Parentesco", "CNS", "Data de Nasc.", "Naturalidade", "Ocupação"]],
         body: formState.familyMembers.map((member) => [
           member.name || "Não informado",
@@ -67,21 +86,21 @@ export function UserProfiles({ formState }: UserProfilesProps) {
           member.occupation || "Não informado",
         ]),
         theme: "grid",
-        styles: { fontSize: 11 },
+        styles: { fontSize: pdfConfig.contentSize },
+        headStyles: { fillColor: pdfConfig.tableHeaderBg, textColor: pdfConfig.tableHeaderColor },
+        alternateRowStyles: { fillColor: pdfConfig.tableRowBg, textColor: pdfConfig.tableRowColor },
       });
 
-      nextY = (doc as any).lastAutoTable.finalY + 10;
+      currentY = (doc as any).lastAutoTable.finalY + 10;
 
       // 🏥 Seção: Informações de Saúde
-      doc.setFontSize(16);
-      doc.text("Informações de Saúde", 10, nextY);
-      doc.setFontSize(12);
+      doc.setFontSize(pdfConfig.sectionTitleSize);
+      doc.text("Informações de Saúde", pdfConfig.marginX, currentY);
+      doc.setFontSize(pdfConfig.contentSize);
 
       autoTable(doc, {
-        startY: nextY + 5,
-        head: [
-          ["Nome", "Hipertensão", "Diabetes", "Fuma", "Bebe", "Problemas Renais", "Câncer"],
-        ],
+        startY: currentY + 5,
+        head: [["Nome", "Hipertensão", "Diabetes", "Fuma", "Bebe", "Problemas Renais", "Câncer"]],
         body: formState.familyMembers.map((member) => [
           member.name || "Não informado",
           member.healthInfo?.hasHypertension ? "Sim" : "Não",
@@ -92,7 +111,9 @@ export function UserProfiles({ formState }: UserProfilesProps) {
           member.healthInfo?.hasCancer ? "Sim" : "Não",
         ]),
         theme: "grid",
-        styles: { fontSize: 11 },
+        styles: { fontSize: pdfConfig.contentSize },
+        headStyles: { fillColor: pdfConfig.tableHeaderBg, textColor: pdfConfig.tableHeaderColor },
+        alternateRowStyles: { fillColor: pdfConfig.tableRowBg, textColor: pdfConfig.tableRowColor },
       });
     }
 
@@ -105,20 +126,6 @@ export function UserProfiles({ formState }: UserProfilesProps) {
 
   return (
     <div className="flex flex-col justify-center bg-white p-6">
-      {/* Exibição Prévia */}
-      <div ref={printRef} className="bg-white p-6 rounded-lg shadow-md">
-        <h3 className="mb-4 text-lg font-bold text-indigo-700 text-center">Ficha Domiciliar</h3>
-
-        <div className="border p-4 rounded-md bg-gray-50">
-          <p className="text-gray-700">
-            <strong>Endereço:</strong> {formState.homeAddress || "Não informado"}
-          </p>
-          <p className="text-gray-700">
-            <strong>Telefone:</strong> {formState.phone || "Não informado"}
-          </p>
-        </div>
-      </div>
-
       {/* Botão para gerar PDF */}
       <button
         onClick={generatePDF}
