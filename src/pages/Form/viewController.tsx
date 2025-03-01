@@ -146,17 +146,28 @@ export const ControllerForm = () => {
   function handleSave() {
     setLoading(true);
   
-    // Gera um ID único e atualiza o estado local primeiro
-    const updatedFormState = { ...localFormState, id: uuidv4() };
-    console.log(updatedFormState)
-    setLocalFormState(updatedFormState)
+    // Criar um ID único
+    const updatedFormState = {
+      ...localFormState,
+      id: uuidv4(),
+      extraData: { ...localExtraDataState },  // Garante que extraData está atualizado
+      healthForm: { ...localHealthState },   // Garante que healthForm também está atualizado
+    };
   
+    console.log("Salvando...", updatedFormState);
+  
+    // Atualizar estado global antes de adicionar
     setDomicile("formState", updatedFormState);
+    setDomicile("extraData", updatedFormState.extraData);
+    setDomicile("healthForm", updatedFormState.healthForm);
+  
+    // Adicionar o item atualizado
     addDomicileItem(updatedFormState);
   
     setLoading(false);
     enqueueSnackbar("Salvo com sucesso!", { variant: "success" });
   }
+  
   
 
   // Formulários dinâmicos

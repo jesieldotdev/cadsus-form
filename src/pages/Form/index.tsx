@@ -62,7 +62,7 @@ const Form: React.FC = () => {
           onClick={()=> setShowDomicileForm(prev => !prev)}
           className="text-indigo-600 hover:text-indigo-800"
         >
-          <span>{!showDomicileForm? 'Mostrar' : 'Esconder'}</span>
+          <span>{!showDomicileForm? 'Mostrar' : 'Esconder'} domicilio</span>
         </button>
      {showDomicileForm ?  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {formFields.map((field, idx) => (
@@ -93,7 +93,7 @@ const Form: React.FC = () => {
               )}
             </div>
           ))}
-        </div> : null}
+        </div> : ' ...'}
 
         {/* Stepper para membros da família */}
         {familyMembersState.length > 0 && (
