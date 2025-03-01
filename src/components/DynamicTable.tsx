@@ -33,7 +33,7 @@ const DynamicTable: React.FC<TableProps> = ({ data, columnWidths }) => {
             <tr  key={row.id} className="border-b hover:bg-gray-100 transition cursor-pointer">
               {columns.map((col) => (
                 <td   key={col} className="py-3 px-6">
-                  {row[col]}
+                  {row[col] ? row[col] : 'Não'}
                 </td>
               ))}
             </tr>

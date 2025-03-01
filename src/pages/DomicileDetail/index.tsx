@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { MapPin, Phone, User, Trash2, Table, List } from "lucide-react";
 import useStore from "../../hooks/useStore";
 import DynamicTable from "../../components/DynamicTable";
+import { PrintPDF } from "../Print";
 
 const DomicileDetail: React.FC = () => {
   const [, actions, select] = useStore();
@@ -24,14 +25,14 @@ const DomicileDetail: React.FC = () => {
     return <div>O domicílio não foi encontrado.</div>;
   }
 
-  
+
   const [viewMode, setViewMode] = useState<"cards" | "table">("table");
 
-  
+
   const handleDelete = () => {
     if (window.confirm("Tem certeza que deseja excluir este domicílio?")) {
       deleteDomicileById(domicileId);
-      navigate(-1); 
+      navigate(-1);
     }
   };
 
@@ -39,7 +40,7 @@ const DomicileDetail: React.FC = () => {
     navigate(`/member/${memberId}`);
   };
 
-  
+
   const familyMembersData = domicile.familyMembers.map((member) => ({
     CNS: member.sus,
     Nome: member.name,
@@ -65,13 +66,17 @@ const DomicileDetail: React.FC = () => {
         <h1 className="text-2xl font-bold text-indigo-700">Detalhes do Domicílio</h1>
 
         {/* Botão de excluir */}
-        <button
-          onClick={handleDelete}
-          className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2"
-        >
-          <Trash2 size={18} />
-          <span>Excluir</span>
-        </button>
+        <div className="flex gap-1">
+          <button
+            onClick={handleDelete}
+            className="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded-lg flex items-center space-x-2"
+          >
+            <Trash2 size={18} />
+            <span>Excluir</span>
+          </button>
+
+          {domicile ? <PrintPDF formState={domicile} /> : null}
+        </div>
       </div>
 
       {/* Informações do Domicílio */}
@@ -103,22 +108,20 @@ const DomicileDetail: React.FC = () => {
       <div className="mt-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-indigo-700">Membros da Família</h2>
-          
+
           {/* Alternador de visualização */}
           <div className="flex space-x-2">
             <button
               onClick={() => setViewMode("cards")}
-              className={`p-2 rounded-lg transition ${
-                viewMode === "cards" ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-600"
-              }`}
+              className={`p-2 rounded-lg transition ${viewMode === "cards" ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-600"
+                }`}
             >
               <List size={20} />
             </button>
             <button
               onClick={() => setViewMode("table")}
-              className={`p-2 rounded-lg transition ${
-                viewMode === "table" ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-600"
-              }`}
+              className={`p-2 rounded-lg transition ${viewMode === "table" ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-600"
+                }`}
             >
               <Table size={20} />
             </button>

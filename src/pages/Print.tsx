@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-import { LoaderPinwheel, X } from "lucide-react";
+import { LoaderPinwheel, Printer, X } from "lucide-react";
 
 interface UserProfilesProps {
   formState: DomicileItem;
@@ -129,9 +129,9 @@ export function PrintPDF({ formState }: UserProfilesProps) {
       {/* Botão para gerar PDF */}
       <button
         onClick={generatePDF}
-        className="px-3 py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 transition duration-300 "
+        className="flex px-3 gap-2 items-center py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 transition duration-300 "
       >
-        {loading ? <LoaderPinwheel className="animate-spin" /> : "Gerar PDF"}
+        <Printer size={18} /> PDF
       </button>
 
       {/* Modal de visualização do PDF */}
