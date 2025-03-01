@@ -22,6 +22,18 @@ const Form: React.FC = () => {
   // Estado para controlar o membro atual no stepper
   const [currentStep, setCurrentStep] = useState(0);
 
+  const removeMemberSafe = (index: number) => {
+    removeMember(index);
+  
+    // Ajusta o `currentStep` para evitar índice inválido
+    setCurrentStep((prevStep) => {
+      return prevStep >= familyMembersState.length - 1
+        ? Math.max(0, familyMembersState.length - 2) // Ajusta para o último membro disponível
+        : prevStep;
+    });
+  };
+  
+
   // Funções para navegar no stepper
   const nextStep = () => {
     if (currentStep < familyMembersState.length - 1) {
@@ -110,7 +122,7 @@ const Form: React.FC = () => {
               <div className="w-full">
                 <FamilyMemberForm
                   index={currentStep}
-                  removeMember={removeMember}
+                  removeMember={removeMemberSafe}
                   handleInputChange={handleMemberInputChange}
                   memberData={familyMembersState[currentStep]}
                 />
