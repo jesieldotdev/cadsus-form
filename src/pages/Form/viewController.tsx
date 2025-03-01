@@ -51,13 +51,29 @@ export const ControllerForm = () => {
 
 
   // Manipuladores de entrada
+
+
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setLocalFormState(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+  
+    setLocalFormState(prevState => {
+      const updatedState = { ...prevState };
+  
+      // Se o campo pertence ao objeto healthInfo, armazenamos corretamente
+      if (name.startsWith("healthInfo.")) {
+        _.set(updatedState, name, value);
+      } else {
+        updatedState[name] = value;
+      }
+  
+      return updatedState;
+    });
   };
+  
+  
+  
+
 
   const handleExtraDataChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -91,14 +107,20 @@ export const ControllerForm = () => {
     }));
   };
 
-  const handleMemberInputChange = (index: number, field: keyof Member, value: string) => {
-    const updatedMembers = [...localFormState.familyMembers];
-    updatedMembers[index] = { ...updatedMembers[index], [field]: value };
-    setLocalFormState(prevState => ({
-      ...prevState,
-      familyMembers: updatedMembers,
-    }));
+  const handleMemberInputChange = (index: number, field: string, value: string) => {
+    setLocalFormState(prevState => {
+      const updatedMembers = [...prevState.familyMembers];
+  
+      // Utilizando lodash para permitir a manipulação de campos aninhados
+      _.set(updatedMembers[index], field, value);
+  
+      return {
+        ...prevState,
+        familyMembers: updatedMembers
+      };
+    });
   };
+  
 
   const exportToExcel = () => {
     const ws = XLSX.utils.json_to_sheet(localFormState.familyMembers);
@@ -131,15 +153,20 @@ export const ControllerForm = () => {
       placeholder: "99 99999-9999"
     },
     {
+      label: 'Tipo de imóvel',
+      name: 'propertyType',
+      type: 'select',
+      value: localExtraDataState.propertyType,
+      options: dataItems.propertyTypes,
+      handleChange: handleExtraDataChange,
+    },
+    {
       label: 'Reside desde',
       name: 'hasLivedSince',
       type: 'date',
       value: localExtraDataState.hasLivedSince,
       handleChange: handleExtraDataChange,
     },
-  ];
-
-  const extraDataFields = [
     {
       label: 'Qt. de moradores',
       name: 'residentsQuantity',
@@ -152,14 +179,6 @@ export const ControllerForm = () => {
       name: 'roomsQuantity',
       type: 'number',
       value: localExtraDataState.roomsQuantity,
-      handleChange: handleExtraDataChange,
-    },
-    {
-      label: 'Tipo de imóvel',
-      name: 'propertyType',
-      type: 'select',
-      value: localExtraDataState.propertyType,
-      options: dataItems.propertyTypes,
       handleChange: handleExtraDataChange,
     },
     {
@@ -177,6 +196,12 @@ export const ControllerForm = () => {
       value: localExtraDataState.animalQuantity,
       handleChange: handleExtraDataChange,
     },
+  ];
+
+  const extraDataFields = [
+  
+ {}
+  
    
   ];
 

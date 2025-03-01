@@ -23,9 +23,14 @@ const memberTypes = [
 
   const skinTones = ["Branco", "Preto", "Pardo", "Amarelo", "Indigena"];
 
+  const yesOrNot = ['Sim', 'Não']
+  const healthStatus = ['Abaixo do Peso' , 'Peso Adequado' , 'Acima do Peso']
+
 export default Object.assign({}, {
     memberTypes,
     scolarity,
-    skinTones
+    skinTones,
+    yesOrNot,
+    healthStatus
      
   });
