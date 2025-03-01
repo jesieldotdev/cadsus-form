@@ -94,6 +94,17 @@ const Form: React.FC = () => {
               >
                 <ChevronLeft className="inline-block" /> Anterior
               </button>
+              <button
+                onClick={nextStep}
+                disabled={currentStep === familyMembersState.length - 1}
+                className={`px-4 py-2 text-white rounded-md w-full sm:w-auto ${
+                  currentStep === familyMembersState.length - 1
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-indigo-500 hover:bg-indigo-600"
+                }`}
+              >
+                Próximo <ChevronRight className="inline-block" />
+              </button>
 
               {/* Renderizando apenas o membro atual */}
               <div className="w-full">
@@ -105,7 +116,15 @@ const Form: React.FC = () => {
                 />
               </div>
 
-              {/* Botão para avançar */}
+              <button
+                onClick={prevStep}
+                disabled={currentStep === 0}
+                className={`px-4 py-2 text-white rounded-md w-full sm:w-auto ${
+                  currentStep === 0 ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-500 hover:bg-indigo-600"
+                }`}
+              >
+                <ChevronLeft className="inline-block" /> Anterior
+              </button>
               <button
                 onClick={nextStep}
                 disabled={currentStep === familyMembersState.length - 1}
@@ -130,8 +149,7 @@ const Form: React.FC = () => {
         </button>
       </div>
 
-      {/* UserProfiles Component */}
-      {formState && formState.homeAddress && <UserProfiles formState={formState} />}
+  
 
       {/* Botões de exportação ou impressão */}
       <div className="mt-6 flex flex-wrap gap-4 justify-center sm:justify-start">
@@ -160,6 +178,11 @@ const Form: React.FC = () => {
           Imprimir
         </button>
       </div>
+
+
+          {/* UserProfiles Component */}
+          <p className="p-2 m-4 font-semibold">Pré visualização</p>
+          {formState && formState.homeAddress && <UserProfiles formState={formState} />}
     </div>
   );
 };
