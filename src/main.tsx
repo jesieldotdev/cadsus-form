@@ -2,9 +2,18 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
+import Store from "./store";
+import { BrowserRouter } from "react-router-dom";
+import { SnackbarProvider } from 'notistack';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <SnackbarProvider />
+
+      <Store>
+        <App />
+      </Store>
+    </BrowserRouter>
   </React.StrictMode>,
 )

@@ -1,79 +1,161 @@
-import { useRef } from "react";
-import html2pdf from "html2pdf.js";
+import { useRef, useState } from "react";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
+import { LoaderPinwheel, Printer, X } from "lucide-react";
 
-
-
-interface DataProps{
-    data: Data
+interface UserProfilesProps {
+  formState: DomicileItem;
 }
 
-export function UserProfiles({data}: DataProps) {
-  const printRef = useRef(null);
+// 🎨 Configurações dinâmicas do PDF
+const pdfConfig = {
+  font: "helvetica",
+  titleSize: 14,
+  sectionTitleSize: 12,
+  contentSize: 10,
+  tableHeaderColor: "#ffffff",
+  tableHeaderBg: "#4338ca",
+  tableRowColor: "#000000",
+  tableRowBg: "#f8f9fa",
+  alignTitle: "center" as const,
+  marginX: 10,
+  marginY: 8,
+};
 
-  // Dados dos usuários
-//   const data = {
-//     homeAddress: 'Rua Beija Flor, n 440, São Bento, Roraima - Brasil',
-//     homePhone: '95991712353',
-//     residentsQuantity: 2,
-//     propertyType: 'Alugado',
-//     animalQuantity: '2',
-//     animalType: 'Cachorro e gato',
-//     members: [
-//       {
-//         tipo: '',
-//         nome: 'Jesiel Gomes Da Silva',
-//         sus: '704.0028.5668.3069',
-//         mae: 'Nair Pereira',
-//         pai: 'dfg',
-//       },
-//       {
-//         tipo: '',
-//         nome: 'Ana Gomes Da Silva',
-//         sus: '704.0028.5668.3070',
-//         mae: 'Nair Pereira',
-//         pai: 'dfg',
-//       },
-//     ]
-//   };
+export function PrintPDF({ formState }: UserProfilesProps) {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const printRef = useRef<HTMLDivElement>(null);
 
-  const handlePrint = () => {
-    html2pdf()
-      .from(printRef.current)
-      .save(`ficha_domiciliar-${data.homeAddress}.pdf`);
+  const generatePDF = () => {
+    setLoading(true);
+    const doc = new jsPDF();
+
+    // 🎨 Estilizando o título
+    doc.setFont(pdfConfig.font, "bold");
+    doc.setFontSize(pdfConfig.titleSize);
+    doc.text("Ficha Domiciliar", 105, pdfConfig.marginY, { align: pdfConfig.alignTitle });
+
+    let currentY = pdfConfig.marginY + 10;
+
+    // 🏠 Seção: Dados do Domicílio
+    doc.setFontSize(pdfConfig.sectionTitleSize);
+    doc.text("Dados do Domicílio", pdfConfig.marginX, currentY);
+    doc.setFontSize(pdfConfig.contentSize);
+
+    autoTable(doc, {
+      startY: currentY + 5,
+      head: [["Campo", "Valor"]],
+      body: [
+        ["Endereço", formState.homeAddress || "Não informado"],
+        ["Telefone", formState.phone || "Não informado"],
+        ["Quantidade de moradores", formState.extraData.residentsQuantity || "0"],
+        ["Quantidade de cômodos", formState.extraData.roomsQuantity || "0"],
+        ["Tipo de residência", formState.extraData.residenceType || "Não informado"],
+        ["Material predominante", formState.extraData.predominantConstructionMaterial || "Não informado"],
+        ["Energia elétrica", formState.extraData.electricityAvailability ? "Sim" : "Não"],
+        ["Acesso à residência", formState.extraData.accessToResidenceType || "Não informado"],
+        ["Fonte de água", formState.extraData.waterSupply || "Não informado"],
+        ["Tratamento de água", formState.extraData.waterTreatment || "Não informado"],
+        ["Quantidade de animais", formState.extraData.animalQuantity || "0"],
+        ["Tipo de animais", formState.extraData.animalTypes || "Não informado"],
+      ],
+      theme: "grid",
+      styles: { fontSize: pdfConfig.contentSize },
+      headStyles: { fillColor: pdfConfig.tableHeaderBg, textColor: pdfConfig.tableHeaderColor },
+      alternateRowStyles: { fillColor: pdfConfig.tableRowBg, textColor: pdfConfig.tableRowColor },
+    });
+
+    currentY = (doc as any).lastAutoTable.finalY + 10;
+
+    // 👤 Seção: Moradores
+    if (formState.familyMembers.length > 0) {
+      doc.setFontSize(pdfConfig.sectionTitleSize);
+      doc.text("Moradores", pdfConfig.marginX, currentY);
+      doc.setFontSize(pdfConfig.contentSize);
+
+      autoTable(doc, {
+        startY: currentY + 5,
+        head: [["Nome", "Parentesco", "CNS", "Data de Nasc.", "Naturalidade", "Ocupação"]],
+        body: formState.familyMembers.map((member) => [
+          member.name || "Não informado",
+          member.type || "Não informado",
+          member.sus || "Não informado",
+          member.dateOfBirth || "Não informado",
+          member.naturalFrom || "Não informado",
+          member.occupation || "Não informado",
+        ]),
+        theme: "grid",
+        styles: { fontSize: pdfConfig.contentSize },
+        headStyles: { fillColor: pdfConfig.tableHeaderBg, textColor: pdfConfig.tableHeaderColor },
+        alternateRowStyles: { fillColor: pdfConfig.tableRowBg, textColor: pdfConfig.tableRowColor },
+      });
+
+      currentY = (doc as any).lastAutoTable.finalY + 10;
+
+      // 🏥 Seção: Informações de Saúde
+      doc.setFontSize(pdfConfig.sectionTitleSize);
+      doc.text("Informações de Saúde", pdfConfig.marginX, currentY);
+      doc.setFontSize(pdfConfig.contentSize);
+
+      autoTable(doc, {
+        startY: currentY + 5,
+        head: [["Nome", "Hipertensão", "Diabetes", "Fuma", "Bebe", "Problemas Renais", "Câncer"]],
+        body: formState.familyMembers.map((member) => [
+          member.name || "Não informado",
+          member.healthInfo?.hasHypertension ? "Sim" : "Não",
+          member.healthInfo?.hasDiabetes ? "Sim" : "Não",
+          member.healthInfo?.isSmoker ? "Sim" : "Não",
+          member.healthInfo?.usesAlcohol ? "Sim" : "Não",
+          member.healthInfo?.hasKidneyProblems ? "Sim" : "Não",
+          member.healthInfo?.hasCancer ? "Sim" : "Não",
+        ]),
+        theme: "grid",
+        styles: { fontSize: pdfConfig.contentSize },
+        headStyles: { fillColor: pdfConfig.tableHeaderBg, textColor: pdfConfig.tableHeaderColor },
+        alternateRowStyles: { fillColor: pdfConfig.tableRowBg, textColor: pdfConfig.tableRowColor },
+      });
+    }
+
+    // 📥 Criar Blob para exibição prévia do PDF
+    const pdfBlob = doc.output("blob");
+    const pdfBlobUrl = URL.createObjectURL(pdfBlob);
+    setPdfUrl(pdfBlobUrl);
+    setLoading(false);
   };
 
   return (
-    <div className="flex justify-center bg-white p-4">
-      <div ref={printRef} className="bg-white p-4" style={{ fontSize: '10px', width: '100%', margin: '32px' }}>
-        <h3 className="mb-4"><strong>Ficha Domiciliar</strong></h3>
+    <>
+      {/* Botão para gerar PDF */}
+      <button
+        onClick={generatePDF}
+        className="flex px-3 gap-2 items-center py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 transition duration-300 "
+      >
+        <Printer size={18} /> PDF
+      </button>
 
-        {/* Endereço e detalhes do domicílio */}
-        <div className="border p-2 rounded-md">
-          <p><strong>Endereço: </strong>{data.homeAddress}</p>
-          <p><strong>Telefone: </strong>{data.homePhone}</p>
-          <p><strong>Quantidade de moradores: </strong>{data.residentsQuantity}</p>
-          <p><strong>Tipo de propriedade: </strong>{data.propertyType}</p>
-          <p><strong>Quantidade de animais: </strong>{data.animalQuantity}</p>
-          <p><strong>Tipo de animais: </strong>{data.animalType}</p>
-        </div>
-
-        {!!data.members.length && <h3 className="mt-4"><strong>Moradores: </strong></h3>}
-        {data.members.map((member, index) => (
-          <div key={index} style={{ marginBottom: '12px' }} className="border p-2 rounded-md">
-            <p><strong>Nome: </strong>{member.nome}</p>
-            <p><strong>Tipo: </strong>{member.tipo || 'Não especificado'}</p>
-            <p><strong>SUS: </strong>{member.sus}</p>
-            <p><strong>Mãe: </strong>{member.mae}</p>
-            <p><strong>Pai: </strong>{member.pai}</p>
+      {/* Modal de visualização do PDF */}
+      {pdfUrl && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-bold text-gray-700">Pré-visualização do PDF</h2>
+              <button onClick={() => setPdfUrl(null)} className="text-gray-600 hover:text-gray-800">
+                <X size={20} />
+              </button>
+            </div>
+            <iframe src={pdfUrl} className="w-full h-[500px]"></iframe>
+            <div className="flex justify-end space-x-4 mt-4">
+              <a href={pdfUrl} download={`ficha_domiciliar-${formState.homeAddress}.pdf`} className="bg-blue-600 text-white px-4 py-2 rounded-md">
+                Baixar PDF
+              </a>
+              <button onClick={() => setPdfUrl(null)} className="bg-gray-500 text-white px-4 py-2 rounded-md">
+                Fechar
+              </button>
+            </div>
           </div>
-        ))}
-
-
-      </div>
-              {/* Botão para gerar o PDF */}
-              <button onClick={handlePrint} style={{ marginTop: '20px', padding: '8px 16px', backgroundColor: '#007bff', color: '#fff', border: 'none', cursor: 'pointer', borderRadius: '4px' }}>
-          Gerar PDF
-        </button>
-    </div>
+        </div>
+      )}
+    </>
   );
 }
